@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enlace Fatal - Árbol Infinito</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1E1E1E;
+            overflow: hidden;
+            font-family: sans-serif;
+            user-select: none;
+        }
+        canvas {
+            display: block;
+        }
+        #ui-instrucciones {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.8);
+            background: rgba(0, 0, 0, 0.85);
+            padding: 12px 24px;
+            border-radius: 30px;
+            pointer-events: none;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            line-height: 1.5;
+            z-index: 999;
+        }
+
+        /* Pantalla de carga */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0d0d11;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #loading-logo-container {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            opacity: 0.03;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-logo-silhouette {
+            width: 100%;
+            height: 100%;
+            animation: slowRotate 30s linear infinite;
+        }
+
+        @keyframes slowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        #loading-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #a3b8cc 50%, #7d2fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(125, 47, 255, 0.25));
+            text-transform: uppercase;
+            text-align: center;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(125, 47, 255, 0.25)); }
+            50% { filter: drop-shadow(0 0 25px rgba(125, 47, 255, 0.5)); }
+        }
+
+        #loading-network-container {
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #loading-network-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* SVG Line growth animation */
+        .loading-svg-line {
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loading-svg-line.active {
+            stroke-dashoffset: 0;
+            stroke: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Hexagons spawn scale and fade */
+        .loading-svg-hex {
+            transform-origin: center;
+            transform-box: fill-box;
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+        }
+
+        .loading-svg-hex.active {
+            transform: scale(1);
+            opacity: 0.95;
+        }
+
+        /* Standard fills */
+        .hex-trunk {
+            fill: #ffffff;
+            stroke: rgba(255, 255, 255, 0.5);
+            stroke-width: 1.5;
+        }
+        .hex-purple {
+            fill: #c3b7d1;
+            stroke: rgba(195, 183, 209, 0.5);
+            stroke-width: 1.5;
+        }
+        .hex-blue {
+            fill: #0ea5e9;
+            stroke: rgba(14, 165, 233, 0.5);
+            stroke-width: 1.5;
+        }
+        .hex-green {
+            fill: #a3e635;
+            stroke: rgba(163, 230, 53, 0.5);
+            stroke-width: 1.5;
+        }
+        .hex-coral {
+            fill: #f87171;
+            stroke: rgba(248, 113, 113, 0.5);
+            stroke-width: 1.5;
+        }
+
+        /* Wave pulse animation */
+        @keyframes svgPulseWave {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .pulse-wave {
+            animation: svgPulseWave 1.2s ease-in-out;
+        }
+
+        /* Status text and progress bar */
+        #loading-status-container {
+            display: flex;
+            justify-content: space-between;
+            width: 320px;
+            margin-top: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        #loading-bar-outer {
+            width: 320px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        #loading-bar-inner {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #0ea5e9, #a3e635, #c3b7d1, #f87171);
+            box-shadow: 0 0 8px rgba(14, 165, 233, 0.6);
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Pantalla de carga con hexágonos interactivos -->
+<div id="loading-screen">
+    <div id="loading-logo-container">
+        <!-- SILUETA VECTORIAL DEL TABLERO MODULAR (SVG) -->
+        <svg class="loading-logo-silhouette" viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+            <path d="M135,60 H195 L245,100 V140 L220,160 V200 L195,220 V240 L220,260 V280 L195,300 L235,335 V355 L195,385 V405 H135 L100,375 V355 L120,335 V305 L95,285 V245 L140,205 V190 L110,160 V120 L135,95 V60 Z"
+                  stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" fill="none" />
+        </svg>
+    </div>
+
+    <h1 id="loading-title">CONECTANDO...</h1>
+    
+    <div id="loading-network-container">
+        <svg id="loading-network-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- LINES -->
+            <!-- Level 1 connections -->
+            <line id="load-line-0-1" class="loading-svg-line" x1="200" y1="200" x2="200" y2="140" />
+            <line id="load-line-0-2" class="loading-svg-line" x1="200" y1="200" x2="252" y2="230" />
+            <line id="load-line-0-3" class="loading-svg-line" x1="200" y1="200" x2="148" y2="230" />
+            
+            <!-- Level 2 connections -->
+            <line id="load-line-1-4" class="loading-svg-line" x1="200" y1="140" x2="252" y2="110" />
+            <line id="load-line-1-5" class="loading-svg-line" x1="200" y1="140" x2="148" y2="110" />
+            <line id="load-line-2-6" class="loading-svg-line" x1="252" y1="230" x2="252" y2="290" />
+            <line id="load-line-3-7" class="loading-svg-line" x1="148" y1="230" x2="148" y2="290" />
+            <line id="load-line-2-8" class="loading-svg-line" x1="252" y1="230" x2="304" y2="200" />
+            <line id="load-line-3-9" class="loading-svg-line" x1="148" y1="230" x2="96" y2="200" />
+
+            <!-- HEXAGONS -->
+            <!-- Trunk Node (White) -->
+            <g id="load-hex-0" class="loading-svg-hex hex-trunk">
+                <polygon points="220,200 210,217.32 190,217.32 180,200 190,182.68 210,182.68" />
+            </g>
+            
+            <!-- Level 1 Nodes -->
+            <g id="load-hex-1" class="loading-svg-hex hex-purple">
+                <polygon points="220,140 210,157.32 190,157.32 180,140 190,122.68 210,122.68" />
+            </g>
+            <g id="load-hex-2" class="loading-svg-hex hex-blue">
+                <polygon points="272,230 262,247.32 242,247.32 232,230 242,212.68 262,212.68" />
+            </g>
+            <g id="load-hex-3" class="loading-svg-hex hex-green">
+                <polygon points="168,230 158,247.32 138,247.32 128,230 138,212.68 158,212.68" />
+            </g>
+            
+            <!-- Level 2 Nodes -->
+            <g id="load-hex-4" class="loading-svg-hex hex-coral">
+                <polygon points="272,110 262,127.32 242,127.32 232,110 242,92.68 262,92.68" />
+            </g>
+            <g id="load-hex-5" class="loading-svg-hex hex-purple">
+                <polygon points="168,110 158,127.32 138,127.32 128,110 138,92.68 158,92.68" />
+            </g>
+            <g id="load-hex-6" class="loading-svg-hex hex-blue">
+                <polygon points="272,290 262,307.32 242,307.32 232,290 242,272.68 262,272.68" />
+            </g>
+            <g id="load-hex-7" class="loading-svg-hex hex-green">
+                <polygon points="168,290 158,307.32 138,307.32 128,290 138,272.68 158,272.68" />
+            </g>
+            <g id="load-hex-8" class="loading-svg-hex hex-purple">
+                <polygon points="324,200 314,217.32 294,217.32 284,200 294,182.68 314,182.68" />
+            </g>
+            <g id="load-hex-9" class="loading-svg-hex hex-coral">
+                <polygon points="116,200 106,217.32 86,217.32 76,200 86,182.68 106,182.68" />
+            </g>
+        </svg>
+    </div>
+    
+    <div id="loading-status-container">
+        <div id="loading-text-status">Inicializando conexión...</div>
+        <div id="loading-percentage">0%</div>
+    </div>
+    <div id="loading-bar-outer">
+        <div id="loading-bar-inner"></div>
+    </div>
+</div>
+
+<div id="ui-instrucciones">
+    👆 <b>Clic Izquierdo</b> en hexágonos vacíos para expandir | 🖱️ <b>Arrastrar Fondo</b> para mover la pantalla <br>
+    🎛️ <b>Rueda del Mouse</b> para hacer Zoom | 📌 <b>Mantener presionado</b> hexágono de color para generar nuevos hexágonos de colores al azar
+</div>
+
+<script>
+// DIAGNÓSTICO DE ERRORES DE JAVASCRIPT TEMPORAL EN CONSOLA Y PANTALLA
+window.onerror = function(msg, url, line) {
+    console.error("JavaScript Error: " + msg + " at " + url + ":" + line);
+    const errDiv = document.createElement("div");
+    errDiv.style.position = "fixed";
+    errDiv.style.top = "0";
+    errDiv.style.left = "0";
+    errDiv.style.width = "100%";
+    errDiv.style.backgroundColor = "rgba(255, 0, 0, 0.9)";
+    errDiv.style.color = "white";
+    errDiv.style.padding = "15px";
+    errDiv.style.zIndex = "999999";
+    errDiv.style.fontFamily = "monospace";
+    errDiv.style.fontSize = "14px";
+    errDiv.innerText = "Error: " + msg + " (Línea " + line + ")";
+    document.body.appendChild(errDiv);
+};
+
+const sketch = (p) => {
+    let nodos = [];
+    let lineas = [];
+    let tamanoHex = 25; 
+
+    // Sistema de Cámara Avanzado (Posición + Zoom)
+    let camaraX = 0, camaraY = 0;
+    let destinoCamX = 0, destinoCamY = 0;
+    let zoom = 1.0;
+    let destinoZoom = 1.0;
+
+    // Sistema de Audio y Auto-Ramificación
+    let audioContext = null;
+    let nodoPresionado = null;
+    let tiempoAutoRamificacion = 0;
+    const INTERVALO_RAMIFICACION = 100; // ms entre ramificaciones automáticas
+    let osciladorRamificacion = null;
+    let gainRamificacion = null;
+    let sonidoRamificacionActivo = false;
+
+    const COLORES_FIGMA = {
+        rojo: '#f87171',
+        verde: '#a3e635',
+        morado: '#c3b7d1',
+        azul: '#0ea5e9'
+    };
+
+    p.setup = () => {
+        p.createCanvas(p.windowWidth, p.windowHeight);
+        
+        // Centrar el mapa al inicio
+        camaraX = p.windowWidth / 2;
+        camaraY = p.windowHeight / 2;
+        destinoCamX = camaraX;
+        destinoCamY = camaraY;
+
+        // Nodo central estable
+        let nodoCentral = {
+            id: 0,
+            x: 0, 
+            y: 0,
+            tipo: 'tronco',
+            color: 'rgba(255, 255, 255, 0.15)', 
+            hijosMax: 6
+        };
+        nodos.push(nodoCentral);
+        
+        generarSeisIniciales(nodoCentral);
+    };
+
+    p.draw = () => {
+        p.background('#1E1E1E'); 
+        
+        // Suavizado cinemático de movimiento y zoom (Lerp)
+        camaraX = p.lerp(camaraX, destinoCamX, 0.1);
+        camaraY = p.lerp(camaraY, destinoCamY, 0.1);
+        zoom = p.lerp(zoom, destinoZoom, 0.1);
+
+        // Rejilla de fondo adaptada al Zoom
+        dibujarCuadrículaInfinita();
+
+        p.push();
+        // Aplicar transformaciones espaciales de la cámara
+        p.translate(camaraX, camaraY);
+        p.scale(zoom);
+
+        // Convertir coordenadas del mouse considerando posición y escala actual
+        let mouseMundialX = (p.mouseX - camaraX) / zoom;
+        let mouseMundialY = (p.mouseY - camaraY) / zoom;
+
+        // 1. RENDERIZAR CONEXIONES
+        p.strokeWeight(3 / zoom); // Mantiene el grosor estilizado sin importar el zoom
+        for (let l of lineas) {
+            let medX = (l.p1.x + l.p2.x) / 2;
+            let medY = (l.p1.y + l.p2.y) / 2;
+            
+            if (l.p1.tipo !== 'vacio' && l.p2.tipo !== 'vacio') {
+                p.stroke(255, 180); 
+            } else {
+                p.stroke(255, 45);  
+            }
+
+            p.noFill();
+            p.beginShape();
+            p.vertex(l.p1.x, l.p1.y);
+            p.vertex(medX + (l.p1.x < l.p2.x ? -10 : 10), (l.p1.y + medY) / 2); 
+            p.vertex(medX, medY);
+            p.vertex(l.p2.x, l.p2.y);
+            p.endShape();
+        }
+
+        // 2. RENDERIZAR NODOS
+        for (let n of nodos) {
+            if (n.tipo === 'vacio') {
+                p.stroke('rgba(255,255,255,0.25)');
+                p.strokeWeight(2 / zoom);
+                p.noFill();
+                dibujarHexagono(n.x, n.y, tamanoHex);
+                
+                // Hover adaptativo
+                if (p.dist(mouseMundialX, mouseMundialY, n.x, n.y) < tamanoHex) {
+                    p.fill('rgba(255,255,255,0.15)');
+                    dibujarHexagono(n.x, n.y, tamanoHex - 4);
+                }
+            } else if (n.tipo === 'tronco') {
+                p.stroke('rgba(255, 255, 255, 0.4)');
+                p.strokeWeight(2 / zoom);
+                p.fill(n.color);
+                dibujarHexagono(n.x, n.y, tamanoHex);
+                p.fill(255, 120);
+                p.noStroke();
+                p.ellipse(n.x, n.y, 6, 6);
+            } else {
+                p.stroke('#FFFFFF');
+                p.strokeWeight(2 / zoom);
+                p.fill(n.color);
+                dibujarHexagono(n.x, n.y, tamanoHex);
+                
+                p.fill(255, 200);
+                p.noStroke();
+                p.ellipse(n.x, n.y, 7, 7);
+            }
+        }
+        p.pop();
+
+        // Arrastre libre de pantalla (Moverse al arrastrar el fondo con clic)
+        if (p.mouseIsPressed) {
+            if (p.mouseButton === p.RIGHT || p.mouseButton === p.CENTER || !sobreCualquierNodo(mouseMundialX, mouseMundialY)) {
+                destinoCamX += p.mouseX - p.pmouseX;
+                destinoCamY += p.mouseY - p.pmouseY;
+            }
+            
+            // Auto-ramificación: Si se está presionando un hexágono de color, ramificar continuamente cada intervalo
+            if (nodoPresionado !== null && nodoPresionado.tipo !== 'vacio') {
+                if (p.millis() - tiempoAutoRamificacion > INTERVALO_RAMIFICACION) {
+                    generarYLlenarHexagono(nodoPresionado);
+                    tiempoAutoRamificacion = p.millis();
+                }
+                // Mantener el sonido continuo mientras se presiona
+                if (!sonidoRamificacionActivo) {
+                    iniciarSonidoRamificacionContinuo();
+                }
+            }
+        }
+    };
+
+    // Registrar Clics para activar nodos
+    p.mousePressed = () => {
+        if (p.mouseButton === p.LEFT) {
+            let mouseMundialX = (p.mouseX - camaraX) / zoom;
+            let mouseMundialY = (p.mouseY - camaraY) / zoom;
+
+            for (let n of nodos) {
+                if (n.tipo === 'vacio' && p.dist(mouseMundialX, mouseMundialY, n.x, n.y) < tamanoHex) {
+                    let opciones = [
+                        { color: COLORES_FIGMA.rojo, hijos: 1 },
+                        { color: COLORES_FIGMA.verde, hijos: 2 },
+                        { color: COLORES_FIGMA.azul, hijos: 3 },
+                        { color: COLORES_FIGMA.morado, hijos: 4 }
+                    ];
+                    
+                    let seleccion = p.random(opciones);
+                    n.tipo = 'color';
+                    n.color = seleccion.color;
+                    n.hijosMax = seleccion.hijos; 
+                    
+                    ramificar(n);
+                    reproducirSonidoConexion();
+                    break;
+                } else if (n.tipo !== 'vacio' && p.dist(mouseMundialX, mouseMundialY, n.x, n.y) < tamanoHex) {
+                    // Rastrear hexágono de color presionado para auto-ramificación
+                    nodoPresionado = n;
+                    tiempoAutoRamificacion = p.millis();
+                    break;
+                }
+            }
+        }
+    };
+
+    // Control del ZOOM mediante la rueda del mouse
+    p.mouseWheel = (event) => {
+        let factorZoom = event.delta > 0 ? 0.9 : 1.1;
+        destinoZoom = p.constrain(destinoZoom * factorZoom, 0.3, 3.0); // Límites del Zoom
+        return false; // Previene el scroll nativo de la web
+    };
+
+    // Limpiar el nodo presionado al soltar el mouse
+    p.mouseReleased = () => {
+        nodoPresionado = null;
+        detenerSonidoRamificacionContinuo();
+    };
+
+    // Reproducir sonido de conexión
+    function reproducirSonidoConexion() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        
+        const now = audioContext.currentTime;
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        
+        osc.start(now);
+        osc.stop(now + 0.15);
+    }
+
+    // Reproducir sonido de ramificación automática continua
+    function iniciarSonidoRamificacionContinuo() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        
+        if (sonidoRamificacionActivo) return;
+        
+        osciladorRamificacion = audioContext.createOscillator();
+        gainRamificacion = audioContext.createGain();
+        
+        osciladorRamificacion.connect(gainRamificacion);
+        gainRamificacion.connect(audioContext.destination);
+        
+        osciladorRamificacion.frequency.setValueAtTime(450, audioContext.currentTime);
+        gainRamificacion.gain.setValueAtTime(0.15, audioContext.currentTime);
+        
+        osciladorRamificacion.start(audioContext.currentTime);
+        sonidoRamificacionActivo = true;
+    }
+    
+    function detenerSonidoRamificacionContinuo() {
+        if (!sonidoRamificacionActivo || !osciladorRamificacion) return;
+        
+        const now = audioContext.currentTime;
+        gainRamificacion.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        osciladorRamificacion.stop(now + 0.1);
+        
+        sonidoRamificacionActivo = false;
+        osciladorRamificacion = null;
+        gainRamificacion = null;
+    }
+
+    // Reproducir sonido de ramificación automática
+    function reproducirSonidoRamificacion() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        
+        const now = audioContext.currentTime;
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        
+        osc.start(now);
+        osc.stop(now + 0.12);
+    }
+
+    // Helper para saber si el mouse está pulsando un nodo o el fondo vacío
+    function sobreCualquierNodo(mx, my) {
+        for (let n of nodos) {
+            if (p.dist(mx, my, n.x, n.y) < tamanoHex) return true;
+        }
+        return false;
+    }
+
+    function generarSeisIniciales(nodoPadre) {
+        let distancia = 90; 
+        for (let i = 0; i < 6; i++) {
+            let angulo = (p.TWO_PI / 6) * i + p.HALF_PI;
+            let nuevoX = nodoPadre.x + p.cos(angulo) * distancia;
+            let nuevoY = nodoPadre.y + p.sin(angulo) * distancia;
+
+            let nuevoNodo = {
+                id: nodos.length + i + 1,
+                x: nuevoX,
+                y: nuevoY,
+                tipo: 'vacio',
+                color: '#000000',
+                hijosMax: 0,
+                padreX: nodoPadre.x,
+                padreY: nodoPadre.y
+            };
+
+            nodos.push(nuevoNodo);
+            lineas.push({ p1: nodoPadre, p2: nuevoNodo });
+        }
+    }
+
+    function ramificar(nodoPadre) {
+        let cantidadRamas = nodoPadre.hijosMax;
+        let distancia = 90; 
+        
+        let anguloBase = p.atan2(nodoPadre.y - (nodoPadre.padreY || 0), nodoPadre.x - (nodoPadre.padreX || 0));
+        if(nodoPadre.padreX === undefined) anguloBase = p.random(p.TWO_PI);
+
+        let ramasCreadas = 0;
+        let intentosAngulo = 0;
+        
+        while (ramasCreadas < cantidadRamas && intentosAngulo < 12) {
+            let division = p.TWO_PI / 6;
+            let anguloPropuesto = anguloBase + (intentosAngulo * division) + p.random(-0.05, 0.05);
+            
+            let nuevoX = nodoPadre.x + p.cos(anguloPropuesto) * distancia;
+            let nuevoY = nodoPadre.y + p.sin(anguloPropuesto) * distancia;
+
+            let superpuesto = false;
+            for (let existente of nodos) {
+                if (p.dist(nuevoX, nuevoY, existente.x, existente.y) < tamanoHex * 2.1) {
+                    superpuesto = true;
+                    break;
+                }
+            }
+
+            if (!superpuesto) {
+                let nuevoNodo = {
+                    id: nodos.length + 1,
+                    x: nuevoX,
+                    y: nuevoY,
+                    tipo: 'vacio',
+                    color: '#000000',
+                    hijosMax: 0,
+                    padreX: nodoPadre.x,
+                    padreY: nodoPadre.y
+                };
+
+                nodos.push(nuevoNodo);
+                lineas.push({ p1: nodoPadre, p2: nuevoNodo });
+                ramasCreadas++;
+            }
+            intentosAngulo++;
+        }
+    }
+
+    // Generar un hexágono vacío y llenarlo de color al azar
+    function generarYLlenarHexagono(nodoPadre) {
+        let distancia = 90;
+        let anguloBase = p.atan2(nodoPadre.y - (nodoPadre.padreY || 0), nodoPadre.x - (nodoPadre.padreX || 0));
+        if (nodoPadre.padreX === undefined) anguloBase = p.random(p.TWO_PI);
+        
+        let encontrado = false;
+        
+        for (let intento = 0; intento < 12 && !encontrado; intento++) {
+            let division = p.TWO_PI / 6;
+            let anguloPropuesto = anguloBase + (intento * division) + p.random(-0.05, 0.05);
+            
+            let nuevoX = nodoPadre.x + p.cos(anguloPropuesto) * distancia;
+            let nuevoY = nodoPadre.y + p.sin(anguloPropuesto) * distancia;
+
+            let superpuesto = false;
+            for (let existente of nodos) {
+                if (p.dist(nuevoX, nuevoY, existente.x, existente.y) < tamanoHex * 2.1) {
+                    superpuesto = true;
+                    break;
+                }
+            }
+
+            if (!superpuesto) {
+                let nuevoNodo = {
+                    id: nodos.length + 1,
+                    x: nuevoX,
+                    y: nuevoY,
+                    tipo: 'color',
+                    color: p.random([COLORES_FIGMA.rojo, COLORES_FIGMA.verde, COLORES_FIGMA.azul, COLORES_FIGMA.morado]),
+                    hijosMax: p.floor(p.random(1, 5)),
+                    padreX: nodoPadre.x,
+                    padreY: nodoPadre.y
+                };
+
+                nodos.push(nuevoNodo);
+                lineas.push({ p1: nodoPadre, p2: nuevoNodo });
+                encontrado = true;
+            }
+        }
+    }
+
+    function dibujarHexagono(x, y, radio) {
+        p.beginShape();
+        for (let a = 0; a < p.TWO_PI; a += p.TWO_PI / 6) {
+            let hx = x + p.cos(a + p.HALF_PI) * radio;
+            let hy = y + p.sin(a + p.HALF_PI) * radio;
+            p.vertex(hx, hy);
+        }
+        p.endShape(p.CLOSE);
+    }
+
+    function dibujarCuadrículaInfinita() {
+        p.stroke('rgba(255, 255, 255, 0.025)');
+        p.strokeWeight(1);
+        
+        let paso = 80 * zoom; 
+        let inicioX = camaraX % paso;
+        let inicioY = camaraY % paso;
+        
+        for (let x = inicioX; x < p.width; x += paso) {
+            p.line(x, 0, x, p.height);
+        }
+        for (let y = inicioY; y < p.height; y += paso) {
+            p.line(0, y, p.width, y);
+        }
+    }
+
+    p.windowWidthResized = () => {
+        p.resizeCanvas(p.windowWidth, p.windowHeight);
+    };
+};
+
+let miEnlaceFatal = new p5(sketch);
+document.oncontextmenu = function() { return false; };
+
+(function() {
+    const loadingScreen = document.getElementById('loading-screen');
+    const barInner = document.getElementById('loading-bar-inner');
+    const percentageText = document.getElementById('loading-percentage');
+    const statusText = document.getElementById('loading-text-status');
+    if (!loadingScreen) return;
+
+    // Time-based progress using robust Date.now()
+    const startTime = Date.now();
+    const duration = 7000; // 7 seconds
+
+    const statusUpdates = [
+        { time: 0, text: "Inicializando conexión..." },
+        { time: 1000, text: "Infectando nodos..." },
+        { time: 2500, text: "Ramificando estructura..." },
+        { time: 4200, text: "Estableciendo enlace fatal..." },
+        { time: 5800, text: "Conexión estable..." },
+        { time: 6500, text: "Accediendo al juego..." }
+    ];
+
+    function updateProgress() {
+        const now = Date.now();
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1.0);
+        const percent = Math.floor(progress * 100);
+
+        if (barInner) barInner.style.width = percent + '%';
+        if (percentageText) percentageText.innerText = percent + '%';
+
+        // Update status text
+        const currentStatus = statusUpdates.reduce((prev, curr) => {
+            return (elapsed >= curr.time) ? curr : prev;
+        }, statusUpdates[0]);
+        if (statusText && statusText.innerText !== currentStatus.text) {
+            statusText.innerText = currentStatus.text;
+        }
+
+        if (progress < 1.0) {
+            requestAnimationFrame(updateProgress);
+        } else {
+            // Fade out overlay
+            loadingScreen.classList.add('hidden');
+            // Remove completely from render tree after transition to avoid canvas blocks
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 800);
+        }
+    }
+    requestAnimationFrame(updateProgress);
+
+    // Timed activation of lines and hexagons
+    const activationTimes = [
+        { type: 'hex', id: 0, delay: 300 },
+        { type: 'line', id: '0-1', delay: 800 },
+        { type: 'hex', id: 1, delay: 1600 },
+        { type: 'line', id: '0-2', delay: 1000 },
+        { type: 'hex', id: 2, delay: 1800 },
+        { type: 'line', id: '0-3', delay: 1200 },
+        { type: 'hex', id: 3, delay: 2000 },
+        { type: 'line', id: '1-4', delay: 2000 },
+        { type: 'hex', id: 4, delay: 2800 },
+        { type: 'line', id: '1-5', delay: 2200 },
+        { type: 'hex', id: 5, delay: 3000 },
+        { type: 'line', id: '2-6', delay: 2400 },
+        { type: 'hex', id: 6, delay: 3200 },
+        { type: 'line', id: '3-7', delay: 2600 },
+        { type: 'hex', id: 7, delay: 3400 },
+        { type: 'line', id: '2-8', delay: 3000 },
+        { type: 'hex', id: 8, delay: 3800 },
+        { type: 'line', id: '3-9', delay: 3200 },
+        { type: 'hex', id: 9, delay: 4000 }
+    ];
+
+    activationTimes.forEach(item => {
+        setTimeout(() => {
+            const elId = `load-${item.type}-${item.id}`;
+            const el = document.getElementById(elId);
+            if (el) {
+                el.classList.add('active');
+            }
+        }, item.delay);
+    });
+
+    // Add extra pulse wave outward at 5.5s
+    setTimeout(() => {
+        const svgContainer = document.getElementById('loading-network-svg');
+        if (svgContainer) {
+            svgContainer.classList.add('pulse-wave');
+        }
+    }, 5500);
+})();
+</script>
+
+</body>
+</html>

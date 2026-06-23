@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>Enlace Fatal</title>
+<audio id="hexSound" preload="auto">
+    <source src="sonidos/click-hexagono.mp3" type="audio/mpeg">
+</audio>
+</head>
+
+<body>
+
+    <div id="visorImagen" class="visor">
+        <span onclick="cerrarImagen()">&times;</span>
+        <img id="imagenGrande" src="" alt="Vista ampliada">
+    </div>
+
+    <div id="pagina-principal" class="vista activa">
+        
+        <szzz class="hero">
+            
+            <div class="formas-fondo">
+                <!-- SVG para dibujar las líneas de conexión -->
+                <svg id="svg-conexiones" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 1;"></svg>
+                
+                <!-- Hexágonos Morados (5) -->
+                <div class="hexagono hex-morado h-m1"></div>
+                <div class="hexagono hex-morado h-m2"></div>
+                <div class="hexagono hex-morado h-m3"></div>
+                <div class="hexagono hex-morado h-m4"></div>
+                <div class="hexagono hex-morado h-m5"></div>
+
+                <!-- Hexágonos Azules (5) -->
+                <div class="hexagono hex-azul h-a1"></div> 
+                <div class="hexagono hex-azul h-a2"></div>
+                <div class="hexagono hex-azul h-a3"></div>
+                <div class="hexagono hex-azul h-a4"></div>
+                <div class="hexagono hex-azul h-a5"></div>
+
+                <!-- Hexágonos Verdes (5) -->
+                <div class="hexagono hex-verde h-v1"></div>
+                <div class="hexagono hex-verde h-v2"></div>
+                <div class="hexagono hex-verde h-v3"></div>
+                <div class="hexagono hex-verde h-v4"></div>
+                <div class="hexagono hex-verde h-v5"></div>
+
+                <!-- Hexágonos Corales (5) -->
+                <div class="hexagono hex-coral h-c1"></div>
+                <div class="hexagono hex-coral h-c2"></div>
+                <div class="hexagono hex-coral h-c3"></div>
+                <div class="hexagono hex-coral h-c4"></div>
+                <div class="hexagono hex-coral h-c5"></div>
+            </div>
+
+            <svg class="circuito">
+                <line x1="100" y1="100" x2="250" y2="100" stroke="white"/>
+                <line x1="250" y1="100" x2="250" y2="200" stroke="white"/>
+                <circle cx="250" cy="200" r="4" fill="white"/>
+            </svg>
+
+            <!-- SILUETA VECTORIAL DEL TABLERO MODULAR (SVG) -->
+            <svg class="logo" viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <path d="M135,60 H195 L245,100 V140 L220,160 V200 L195,220 V240 L220,260 V280 L195,300 L235,335 V355 L195,385 V405 H135 L100,375 V355 L120,335 V305 L95,285 V245 L140,205 V190 L110,160 V120 L135,95 V60 Z"
+                      stroke="white" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="rgba(255,255,255,0.03)"
+                      style="filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));" />
+            </svg>
+
+            <h1 id="titulo-interactivo">ENLACE FATAL</h1>
+
+            <p class="descripcion">
+                Este juego es un juego agonal que se basa en la competencia
+                entre rivales. Su principal objetivo es derrotar al rival
+                conectando y ramificando su estructura hasta el tronco rival
+                y conquistarlo.
+            </p>
+
+            <div class="galeria-seis">
+                <img src="imagenes/fotos 1/IMG_20260420_105314.jpg" alt="Galería 1" onclick="abrirImagen(this.src)">
+                <img src="imagenes/fotos 1/IMG_20260430_123950.jpg" alt="Galería 2" onclick="abrirImagen(this.src)">
+                <img src="imagenes/fotos 1/IMG_20260430_125545.jpg" alt="Galería 3" onclick="abrirImagen(this.src)">
+                <img src="imagenes/fotos 1/IMG_20260430_132727.jpg" alt="Galería 4" onclick="abrirImagen(this.src)">
+                <img src="imagenes/fotos 1/IMG_20260504_112052.jpg" alt="Galería 5" onclick="abrirImagen(this.src)">
+                <img src="imagenes/fotos 1/IMG_20260504_112058.jpg" alt="Galería 6" onclick="abrirImagen(this.src)">
+            </div>
+
+            
+            <!-- LINEA DIVISORA -->
+<div class="linea-divisora"></div>
+
+<!-- TEXTO + IMAGEN -->
+<section class="info-destacada">
+
+    <div class="info-texto">
+        <h2>conexion y contrucion</h2>
+
+        <p>
+            la creación de la interacción se basó en la figura predominante
+             de enlace fatal que es el hexágono la cual esta presente desde piezas hasta tableros 
+             los cuales tiene como objetivo el conectar y enlazar piezas y objetos de manera continua 
+             para crear y contruir por lo cual la construcción y la  conexión son vitales para entender 
+             la conformación de esta interacción 
+        </p>
+    </div>
+    <div class="boton-centro">
+    <button class="btn-componentes" onclick="mostrarGaleria()">
+        Ver Componentes
+    </button>
+</div>
+
+    <div class="info-imagen">
+        <img src="assets/foto15.png" alt="">
+    </div>
+
+
+</section>
+
+<!-- SEGUNDA LINEA DIVISORA -->
+<div class="linea-divisora"></div>
+
+   
+    </button>
+
+
+        <section class="galeria" id="galeria">
+            <div class="card" onclick="abrirGaleriaCompleta('imagenes componentes/WhatsApp Image 2026-06-19 at 16.36.59.jpeg')">
+                <img src="imagenes componentes/WhatsApp Image 2026-06-19 at 16.36.59.jpeg" alt="Componente 1"> 
+            </div>
+
+            <div class="card" onclick="abrirGaleriaCompleta('imagenes componentes/WhatsApp Image 2026-06-19 at 16.36.59 (1).jpeg')">
+                <img src="imagenes componentes/WhatsApp Image 2026-06-19 at 16.36.59 (1).jpeg" alt="Componente 2">
+            </div>
+
+            <div class="card" onclick="abrirGaleriaCompleta('imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00.jpeg')">
+                <img src="imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00.jpeg" alt="Componente 3">
+            </div>
+
+            <div class="card" onclick="abrirGaleriaCompleta('imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00 (1).jpeg')">
+                <img src="imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00 (1).jpeg" alt="Componente 4">
+            </div>
+
+            <div class="card" onclick="abrirGaleriaCompleta('imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00 (2).jpeg')">
+                <img src="imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00 (2).jpeg" alt="Componente 5">
+            </div>
+
+            <div class="card" onclick="abrirGaleriaCompleta('imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00 (3).jpeg')">
+                <img src="imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00 (3).jpeg" alt="Componente 6">
+            </div>
+
+            <div class="card" onclick="abrirGaleriaCompleta('imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00 (4).jpeg')">
+                <img src="imagenes componentes/WhatsApp Image 2026-06-19 at 16.37.00 (4).jpeg" alt="Componente 7">
+            </div>
+        </section>
+
+        <div id="visorGaleria" class="visor-galeria">
+            <button class="cerrar-visor" onclick="cerrarGaleriaCompleta()">×</button>
+            <img id="imagenGaleriaCompleta" src="" alt="Vista completa">
+        </div>
+
+        <section class="seccion-rectangulos">
+            <div class="fila-rectangulos">
+                
+                <div class="rectangulo-contenedor rec-morado">
+                    <div class="rectangulo-negro-interno">
+                        <img src="imagenes/fotos/Captura de pantalla 2026-06-19 160541.png" alt="Imagen 1">
+                    </div>
+                    <div class="rectangulo-texto">
+                        <h3></h3>
+                        <p>las piezas tieene un valor fundamental en el juego debido a que su contrcuccion mediante encaje permite el 
+                            despalsamiento del camino de juego.</p>
+                    </div>
+                </div>
+
+                <div class="rectangulo-contenedor rec-azul">
+                    <div class="rectangulo-negro-interno">
+                        <img src="imagenes/fotos/Captura de pantalla 2026-06-19 160548.png" alt="Imagen 2">
+                    </div>
+                    <div class="rectangulo-texto">
+                        las piezas son fundamentales para el juego siendo las que se encargan de desplazarnos al conectar para infectar a nuestro oponente
+                    </div>
+                </div>
+
+                <div class="rectangulo-contenedor rec-verde">
+                    <div class="rectangulo-negro-interno">
+                        <img src="imagenes/fotos/Captura de pantalla 2026-06-19 160652.png" alt="Imagen 3">
+                    </div>
+                    class="rectangulo-texto">/el tablero modular nace de la necesidad de que no haya desventaja a la hora de jugar debido a que si se juega de 3 en el tablero cuadrado siempre habrá alguien en desventaj
+                </div>
+                
+
+                <div class="rectangulo-contenedor rec-coral">
+                    <div class="rectangulo-negro-interno">
+                        <img src="imagenes/fotos/Captura de pantalla 2026-06-19 160716.png" alt="Imagen 4">
+                    </div>
+                    <div class="rectangulo-texto">
+                        las cartas determinan nuestra corporalidad y forma de jugar ademas de darnos la finlizacion del juego
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="fondo-bajo-rectangulos" id="fondoBajoRectangulos">
+            <section class="galeria-carrusel">
+                <h2>Galería de movimiento</h2>
+                <div class="carrusel-contenedor">
+                    <button class="carrusel-btn prev" onclick="moverCarrusel(-1)">‹</button>
+                    <div class="carrusel-track-wrapper">
+                        <div class="carrusel-track" id="carruselTrack">
+                            <div class="carrusel-item">
+                                <picture>
+                                    <source srcset="imagenes/gifs/gif_1.webp" type="image/webp">
+                                    <img src="imagenes/gifs/gif_1.gif" alt="GIF 1">
+                                </picture>
+                            </div>
+                            <div class="carrusel-item">
+                                <picture>
+                                    <source srcset="imagenes/gifs/gif_2.webp" type="image/webp">
+                                    <img src="imagenes/gifs/gif_2.gif" alt="GIF 2">
+                                </picture>
+                            </div>
+                            <div class="carrusel-item">
+                                <picture>
+                                    <source srcset="imagenes/gifs/gif_3.webp" type="image/webp">
+                                    <img src="imagenes/gifs/gif_3.gif" alt="GIF 3">
+                                </picture>
+                            </div>
+                            <div class="carrusel-item">
+                                <picture>
+                                    <source srcset="imagenes/gifs/gif_4.webp" type="image/webp">
+                                    <img src="imagenes/gifs/gif_4.gif" alt="GIF 4">
+                                </picture>
+                            </div>
+                            <div class="carrusel-item">
+                                <picture>
+                                    <source srcset="imagenes/gifs/gif_5.webp" type="image/webp">
+                                    <img src="imagenes/gifs/gif_5.gif" alt="GIF 5">
+                                </picture>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carrusel-btn next" onclick="moverCarrusel(1)">›</button>
+                </div>
+            </section>
+
+            <div class="boton-experiencia-wrap">
+                <button class="btn-experiencia" onclick="window.open('expereincia%201/gemini-code-1781897404557.html', '_blank')">
+                    <span class="btn-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 2L16 2L22 8L22 16L16 22L8 22L2 16L2 8L8 2Z" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M12 6V18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M6 12H18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    Ver experiencia
+                </button>
+            </div>
+
+            <!-- Panel para texto y botón que aparece cuando el fondo baja -->
+            <div class="fondo-panel" id="fondoPanel">
+                <div class="fondo-panel-contenido">
+                    <h2>Explora la experiencia</h2>
+                    <p>Visita la experiencia completa para ver más detalles y jugar.</p>
+                    <a class="btn-experiencia fondo-panel-btn" href="https://wiki.ead.pucv.cl/Enlace_Fatal" target="_blank">Ver proyecto</a>
+                </div>
+            </div>
+        </div>
+
+    </dzz>
+
+    <!-- VISTA DE DETALLE COMPLETA -->
+    <div id="pagina-detalle" class="vista">
+        <section class="hero vista-detalle">
+            
+            <svg class="circuito">
+                <line x1="100" y1="100" x2="250" y2="100" stroke="white"/>
+                <line x1="250" y1="100" x2="250" y2="200" stroke="white"/>
+                <circle cx="250" cy="200" r="4" fill="white"/>
+            </svg>
+
+            <div class="contenedor-detalle">
+                <h2 id="detalle-titulo" style="margin-bottom: 20px; font-size: 2rem; letter-spacing: 2px;"></h2>
+                <img id="detalle-img" class="img-grande" src="" alt="Vista previa del componente">
+                <br>
+                <button class="btn-volver" onclick="irAPaginaPrincipal()">
+                    Volver a Enlace Fatal
+                </button>
+            </div>
+
+        </section>
+    </div>
+
+<script>
+
+// DIAGNÓSTICO DE ERRORES DE JAVASCRIPT TEMPORAL EN CONSOLA Y PANTALLA
+window.onerror = function(msg, url, line) {
+    console.error("JavaScript Error: " + msg + " at " + url + ":" + line);
+    const errDiv = document.createElement("div");
+    errDiv.style.position = "fixed";
+    errDiv.style.top = "0";
+    errDiv.style.left = "0";
+    errDiv.style.width = "100%";
+    errDiv.style.backgroundColor = "rgba(255, 0, 0, 0.9)";
+    errDiv.style.color = "white";
+    errDiv.style.padding = "15px";
+    errDiv.style.zIndex = "999999";
+    errDiv.style.fontFamily = "monospace";
+    errDiv.style.fontSize = "14px";
+    errDiv.innerText = "Error: " + msg + " (Línea " + line + ")";
+    document.body.appendChild(errDiv);
+};
+
+// 1. DIVISIÓN DINÁMICA DE LETRAS CON ASIGNACIÓN DE COLORES PATRÓN FIJO
+const titulo = document.getElementById("titulo-interactivo");
+const textoOriginal = titulo.innerText;
+titulo.innerHTML = ""; 
+
+const patronColores = [
+    "color-morado", // E
+    "color-verde",  // N
+    "color-azul",   // L
+    "color-coral",  // A
+    "color-morado", // C
+    "color-verde",  // E
+    "",             // (Espacio)
+    "color-azul",   // F
+    "color-coral",  // A
+    "color-morado", // T
+    "color-verde",  // A
+    "color-azul"    // L
+];
+
+textoOriginal.split("").forEach((letra, indice) => {
+    const span = document.createElement("span");
+    span.innerHTML = letra === " " ? "&nbsp;" : letra; 
+    
+    if (letra !== " " && patronColores[indice]) {
+        span.classList.add(patronColores[indice]);
+    }
+    
+    titulo.appendChild(span);
+});
+
+
+// 2. INTERRUPTOR DE GALERÍA DE COMPONENTES
+function mostrarGaleria(){
+    const galeria = document.getElementById("galeria");
+    galeria.classList.toggle("mostrar");
+    
+    if(galeria.classList.contains("mostrar")) {
+        galeria.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// 3. VISOR DE GALERÍA EN PANTALLA COMPLETA
+function abrirGaleriaCompleta(ruta) {
+    const visor = document.getElementById("visorGaleria");
+    const imgCompleta = document.getElementById("imagenGaleriaCompleta");
+    visor.classList.add("activo");
+    imgCompleta.src = ruta;
+}
+
+function cerrarGaleriaCompleta() {
+    document.getElementById("visorGaleria").classList.remove("activo");
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') cerrarGaleriaCompleta();
+});
+
+// 4. SISTEMA DE VISOR (Para las 6 imágenes de la sección hero)
+function abrirImagen(ruta) {
+    const visor = document.getElementById("visorImagen");
+    const imgGrande = document.getElementById("imagenGrande");
+    visor.style.display = "flex";
+    imgGrande.src = ruta;
+}
+
+function cerrarImagen() {
+    document.getElementById("visorImagen").style.display = "none";
+}
+
+
+// 4. ENRUTAMIENTO DE VISTAS (Cambio y retorno de página de componentes)
+function irAPaginaDetalle(rutaImagen, tituloPieza) {
+    document.getElementById("pagina-principal").classList.remove("activa");
+    document.getElementById("pagina-detalle").classList.add("activa");
+    
+    document.getElementById("detalle-img").src = rutaImagen;
+    document.getElementById("detalle-titulo").innerText = tituloPieza;
+    
+    window.scrollTo(0, 0);
+}
+
+function irAPaginaPrincipal() {
+    document.getElementById("pagina-detalle").classList.remove("activa");
+    document.getElementById("pagina-principal").classList.add("activa");
+    
+    window.scrollTo(0, 0);
+}
+
+// LÓGICA DE CONEXIÓN Y RAMIFICACIÓN DE HEXÁGONOS EN EL FONDO (Estilo Enlace Fatal)
+(function() {
+    const container = document.querySelector('.formas-fondo');
+    const svg = document.getElementById('svg-conexiones');
+    const activeConnections = [];
+
+    if (!container || !svg) {
+        console.warn("Faltan contenedores de fondo o SVG para inicializar conexiones.");
+        return;
+    }
+
+    // Función para manejar la ramificación de un hexágono
+    function branchHexagon(hex) {
+        // Obtener o inicializar ID único para el hexágono
+        if (!hex.dataset.id) {
+            hex.dataset.id = 'hex_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Obtener el contador de ramificaciones (máximo 3 por hexágono)
+        const branches = parseInt(hex.dataset.branches || '0');
+        if (branches >= 3) return;
+
+        const containerRect = container.getBoundingClientRect();
+        const rect = hex.getBoundingClientRect();
+
+        // Calcular el centro del hexágono cliqueado relativo al contenedor
+        const x = rect.left - containerRect.left + rect.width / 2;
+        const y = rect.top - containerRect.top + rect.height / 2;
+
+        // Buscar una dirección libre para colocar el nuevo hexágono
+        const angles = [30, 90, 150, 210, 270, 330];
+        angles.sort(() => Math.random() - 0.5); // Mezclar de forma aleatoria
+
+        let targetX = 0;
+        let targetY = 0;
+        let valid = false;
+
+        const distance = 150; // Distancia fija de la grilla
+
+        for (let i = 0; i < angles.length; i++) {
+            const rad = angles[i] * Math.PI / 180;
+            const tx = x + Math.cos(rad) * distance;
+            const ty = y + Math.sin(rad) * distance;
+
+            // Validar que no se salga de los márgenes del contenedor
+            if (tx > 40 && tx < containerRect.width - 40 && ty > 40 && ty < containerRect.height - 40) {
+                targetX = tx;
+                targetY = ty;
+                valid = true;
+                break;
+            }
+        }
+
+        if (!valid) return;
+
+        // Incrementar el contador de ramificaciones
+        hex.dataset.branches = branches + 1;
+
+        // Determinar colores para la línea (blancas con resplandor blanco)
+        let strokeColor = "rgba(255, 255, 255, 0.85)";
+        let shadowColor = "rgba(255, 255, 255, 0.6)";
+
+        // Crear la línea SVG de conexión
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", x);
+        line.setAttribute("y1", y);
+        line.setAttribute("x2", x);
+        line.setAttribute("y2", y);
+        line.setAttribute("stroke", strokeColor);
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("stroke-linecap", "round");
+        line.style.filter = `drop-shadow(0 0 5px ${shadowColor})`;
+        svg.appendChild(line);
+
+        // Animar la línea creciendo desde el origen hasta el destino
+        const duration = 400; // ms
+        const startTime = performance.now();
+
+        function animateLine(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing de salida (ease-out)
+            const ease = 1 - Math.pow(1 - progress, 2);
+            
+            const currentX = x + (targetX - x) * ease;
+            const currentY = y + (targetY - y) * ease;
+            
+            line.setAttribute("x2", currentX);
+            line.setAttribute("y2", currentY);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animateLine);
+            } else {
+                // Spawnear el nuevo hexágono al final de la línea
+                spawnHexagon(targetX, targetY, hex, line);
+            }
+        }
+        requestAnimationFrame(animateLine);
+    }
+
+    // Función para crear e introducir el nuevo hexágono ramificado
+    function spawnHexagon(x, y, parentHex, lineEl) {
+        const newHex = document.createElement("div");
+        
+        // Asignar color aleatorio
+        const colors = ["hex-morado", "hex-azul", "hex-verde", "hex-coral"];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        newHex.className = `hexagono ${randomColor}`;
+        
+        // Tamaños variados coherentes
+        const sizes = [70, 80, 95, 110];
+        const size = sizes[Math.floor(Math.random() * sizes.length)];
+        newHex.style.width = `${size}px`;
+        newHex.style.height = `${size}px`;
+        
+        // Posicionamiento absoluto
+        newHex.style.left = `${x - size / 2}px`;
+        newHex.style.top = `${y - size / 2}px`;
+        
+        // Efecto de pop-up inicial con escala
+        newHex.style.transform = "scale(0) rotate(0deg)";
+        newHex.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        
+        // Introducir al DOM
+        container.appendChild(newHex);
+        
+        // Forzar reflujo para aplicar transición
+        newHex.getBoundingClientRect();
+        newHex.style.transform = ""; // Escala 1 (elimina el transform inline)
+
+        // Asignar flotación tras el pop-up
+        const animations = ["flotar-A", "flotar-B", "flotar-C", "flotar-D", "flotar-E"];
+        const randomAnim = animations[Math.floor(Math.random() * animations.length)];
+        const animDuration = 18 + Math.random() * 12; // 18s a 30s
+        const animDelay = -Math.random() * 20;
+
+        setTimeout(() => {
+            newHex.style.animation = `${randomAnim} ${animDuration}s ease-in-out infinite alternate`;
+            newHex.style.animationDelay = `${animDelay}s`;
+        }, 400);
+
+        // Volver clickable el nuevo hexágono para ramificaciones infinitas
+        newHex.addEventListener("click", (e) => {
+            e.stopPropagation();
+            branchHexagon(newHex);
+        });
+
+        // Registrar la conexión en la lista activa para actualización en tiempo real
+        activeConnections.push({
+            lineEl: lineEl,
+            startEl: parentHex,
+            endEl: newHex
+        });
+    }
+
+    // Bucle continuo para actualizar coordenadas de las líneas con el movimiento flotante
+    function updateConnections() {
+        const containerRect = container.getBoundingClientRect();
+        
+        activeConnections.forEach(conn => {
+            if (!conn.startEl || !conn.endEl) return;
+            const startRect = conn.startEl.getBoundingClientRect();
+            const endRect = conn.endEl.getBoundingClientRect();
+            
+            const x1 = startRect.left - containerRect.left + startRect.width / 2;
+            const y1 = startRect.top - containerRect.top + startRect.height / 2;
+            const x2 = endRect.left - containerRect.left + endRect.width / 2;
+            const y2 = endRect.top - containerRect.top + endRect.height / 2;
+            
+            conn.lineEl.setAttribute("x1", x1);
+            conn.lineEl.setAttribute("y1", y1);
+            conn.lineEl.setAttribute("x2", x2);
+            conn.lineEl.setAttribute("y2", y2);
+        });
+        
+        requestAnimationFrame(updateConnections);
+    }
+    requestAnimationFrame(updateConnections);
+
+    // Inicializar listeners en los 20 hexágonos existentes
+    document.querySelectorAll('.formas-fondo .hexagono').forEach(hex => {
+        hex.addEventListener('click', (e) => {
+            e.stopPropagation();
+            branchHexagon(hex);
+        });
+    });
+
+    const fondoBajoRectangulos = document.getElementById('fondoBajoRectangulos');
+    const rectangulosSection = document.querySelector('.seccion-rectangulos');
+    const carruselTrack = document.getElementById('carruselTrack');
+
+    function actualizarFondoAzul() {
+        if (!fondoBajoRectangulos || !rectangulosSection) return;
+        const rect = rectangulosSection.getBoundingClientRect();
+        const activar = rect.bottom <= window.innerHeight * 0.95;
+        fondoBajoRectangulos.classList.toggle('azul', activar);
+        // Si el usuario hace scroll hacia abajo lo suficiente, bajar el fondo y mostrar el panel
+        const pageScroll = window.scrollY || window.pageYOffset;
+        const bajar = pageScroll > rect.top + 120 || rect.bottom < window.innerHeight * 0.6;
+        fondoBajoRectangulos.classList.toggle('scrolled', bajar);
+    }
+
+    function moverCarrusel(direccion) {
+        if (!carruselTrack) return;
+        const item = carruselTrack.querySelector('.carrusel-item');
+        if (!item) return;
+        const anchoItem = item.getBoundingClientRect().width + 16;
+        carruselTrack.scrollBy({ left: anchoItem * direccion, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', actualizarFondoAzul);
+    window.addEventListener('resize', actualizarFondoAzul);
+    actualizarFondoAzul();
+
+    let autoplayInterval = null;
+    function iniciarAutoplay() {
+        if (!carruselTrack) return;
+        autoplayInterval = setInterval(() => moverCarrusel(1), 3500);
+    }
+
+    function detenerAutoplay() {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+            autoplayInterval = null;
+        }
+    }
+
+    if (carruselTrack) {
+        carruselTrack.addEventListener('mouseenter', detenerAutoplay);
+        carruselTrack.addEventListener('mouseleave', iniciarAutoplay);
+        iniciarAutoplay();
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            detenerAutoplay();
+        } else {
+            iniciarAutoplay();
+        }
+    });
+
+    window.moverCarrusel = moverCarrusel;
+})();
+</script>
+
+</body>
+</html>
