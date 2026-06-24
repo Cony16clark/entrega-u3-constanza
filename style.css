@@ -214,28 +214,67 @@ body {
 /* =============================================
    GALERÍA DESPLEGABLE CON FILAS DE 3
    ============================================= */
+/* ESTRUCTURA BASE DE LA GALERÍA CON IMÁGENES PEQUEÑAS */
 .galeria {
-  display: flex; 
-  flex-wrap: wrap; 
-  justify-content: center; 
+  display: grid;
+  /* Configuración adaptativa para hacer imágenes compactas */
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 24px;
   padding: 0 32px;
   max-height: 0;
   overflow: hidden; 
   opacity: 0;
   background: #111111;
+  max-width: 1200px;
+  margin: 0 auto;
   transition: max-height 0.6s ease, opacity 0.4s ease, padding 0.4s ease;
 }
-.galeria::-webkit-scrollbar {
-  display: none; 
-}
+
+/* ESTADO ABIERTO (ACTIVADO POR JS) */
 .galeria.mostrar {
-  max-height: max-content; 
+  max-height: 2000px; 
   opacity: 1;
   padding: 32px;
-  margin-bottom: 80px; /* Espacio extra al abrirse para no chocar con los rectángulos */
+  margin-bottom: 80px; 
 }
 
+/* MINIATURAS INTERNAS */
+.galeria .card {
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 6px;
+  height: 140px; /* Tamaño estricto e igualitario para todas las tarjetas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1a1a;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.galeria .card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(255,255,255,0.1);
+}
+
+/* IMÁGENES DENTRO DE LAS MINIATURAS */
+.galeria .card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recorta y llena el espacio sin distorsionar el componente */
+  display: block;
+}
+
+/* RESPONSIVE DESIGN (MÓVILES) */
+@media (max-width: 768px) {
+  .galeria {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    padding: 0 16px;
+  }
+  .galeria.mostrar {
+    padding: 24px 16px;
+  }
+}
 .card {
   flex: 0 0 250px; 
   background: #1a1a1a;
@@ -677,5 +716,280 @@ body {
   }
   .recuadro-concepto {
     text-align: center;
+  }
+}/* ==========================================================
+   ESTILOS COMPLETOS — RECUADRO CON BORDE DE 4 COLORES (FLEX)
+   ========================================================== */
+
+.hero {
+  position: relative;
+  width: 100%;
+  padding: 60px 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formas-fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; 
+  z-index: 1;
+  pointer-events: none;
+}
+
+.formas-fondo .hexagono {
+  position: absolute;
+  pointer-events: auto; 
+  cursor: pointer;
+}
+
+/* Espacio inferior de la descripción superior */
+.descripcion-principal {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #cccccc;
+  max-width: 800px;
+  text-align: center;
+  margin: 0 auto 20px auto; 
+  position: relative;
+  z-index: 5;
+}
+
+/* Contenedor que empuja el recuadro bien abajo para dar aire al título */
+.hero-contenido-layout {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  max-width: 1100px;
+  width: 100%;
+  margin: 90px auto 45px auto; /* 90px de margen arriba para que quede más abajo */
+}
+
+/* RECUADRO GLOBAL: Combina flex horizontal y máscara de fondo */
+.recuadro-concepto-global {
+  background-color: rgba(15, 15, 20, 0.82);
+  padding: 35px 40px;
+  border-radius: 16px;
+  position: relative;
+  display: flex;
+  align-items: center; /* Alineación vertical al centro */
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+}
+
+/* Máscara del contorno degradado con los 4 colores */
+.recuadro-concepto-global::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 16px;
+  padding: 2px; /* Grosor del borde */
+  background: linear-gradient(135deg, #c792f9, #007fff, #39d31c, #e04333); /* Morado, azul, verde, coral */
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Columna Izquierda: El Texto */
+.recuadro-col-texto {
+  flex: 1.3;
+  text-align: left;
+}
+
+.subtitulo-construccion {
+  font-size: 1.7rem;
+  color: #ffffff;
+  margin: 0 0 15px 0;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.descripcion-concepto {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #e5e5e5;
+  margin: 0;
+}
+
+/* Columna Derecha: La Imagen */
+.recuadro-col-imagen {
+  flex: 0.7;
+  display: flex;
+  justify-content: center;
+}
+
+.recuadro-col-imagen img {
+  max-height: 170px;
+  width: auto;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Botón Ver Componentes abajo del recuadro */
+.boton-centro-hero {
+  position: relative;
+  z-index: 5;
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Vista responsiva para móviles */
+@media (max-width: 850px) {
+  .recuadro-concepto-global {
+    flex-direction: column;
+    padding: 30px;
+    gap: 30px;
+  }
+  .recuadro-col-texto {
+    text-align: center;
+  }
+  .hero-contenido-layout {
+    margin: 50px auto 30px auto;
+  }
+}/* 1. Le decimos al recuadro que sea como un fantasma y deje pasar los clics al fondo */
+.recuadro-concepto-global {
+  pointer-events: none;
+}
+
+/* 2. Le devolvemos el comportamiento normal al texto e imagen de adentro */
+.recuadro-col-texto, 
+.recuadro-col-imagen {
+  pointer-events: auto;
+}/* ========================================================
+   CORRECCIÓN DEFINITIVA PARA LA APARICIÓN DE HEXÁGONOS
+   ======================================================== */
+
+/* Asegurar que el contenedor base permita posicionar los hijos */
+.formas-fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Forzar propiedades críticas en TODOS los hexágonos */
+.formas-fondo .hexagono {
+  position: absolute;
+  /* Ajusta estos dos valores (width y height) al tamaño real de tus hexágonos si es necesario */
+  width: 60px; 
+  height: 60px;
+  
+  /* Esto asegura que se posicionen exactamente en el centro de la línea blanca */
+  margin-left: -30px;  /* Debe ser la mitad exacta del width */
+  margin-top: -30px;   /* Debe ser la mitad exacta del height */
+  
+  display: block !important;
+  pointer-events: auto;
+  cursor: pointer;
+  
+  /* Declaramos las propiedades de animación aquí para que el navegador las reconozca */
+  transition: scale 0.6s ease-out, opacity 0.6s ease-out !important;
+}/* ========================================================
+   CORRECCIÓN PARA FORZAR LA VISUALIZACIÓN DE LA GALERÍA
+   ======================================================== */
+
+/* Fuerza a que la sección de la galería exista y se muestre en pantalla */
+#galeria, .galeria {
+  display: grid !important; /* O 'flex' si usabas flexbox para tus tarjetas */
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 10;
+  padding: 40px 20px;
+}
+
+/* Asegura que las tarjetas de imágenes dentro de la galería tengan tamaño */
+.galeria .card {
+  display: block !important;
+  min-height: 200px; /* Le da una altura mínima por si colapsaron */
+  background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil de prueba */
+}
+
+.galeria .card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}/* La galería inicia oculta */
+.galeria {
+  display: none; 
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+/* Estilo para las tarjetas de los componentes */
+.card {
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Estilo para el visor de imagen completa (por si acaso) */
+.visor-galeria {
+  display: none; /* Inicia oculto */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+}/* =============================================
+   GALERÍA DESPLEGABLE CON FILAS DE 3
+   ============================================= */
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Crea exactamente 3 columnas principales */
+  gap: 24px;
+  padding: 0 32px;
+  max-height: 0;          /* Inicialmente colapsado */
+  overflow: hidden; 
+  opacity: 0;
+  background: #111111;
+  transition: max-height 0.6s ease, opacity 0.4s ease, padding 0.4s ease;
+}
+
+/* Cuando el botón añade esta clase vía JS, se despliega suavemente */
+.galeria.mostrar {
+  max-height: 2000px; /* Un valor lo suficientemente alto para albergar las 7 imágenes */
+  opacity: 1;
+  padding: 32px;
+  margin-bottom: 80px; 
+}
+
+/* Ajuste responsive para celulares: pasa de 3 columnas a 1 sola */
+@media (max-width: 768px) {
+  .galeria {
+    grid-template-columns: 1fr;
   }
 }
