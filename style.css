@@ -26,7 +26,7 @@ body {
 .vista.activa { display: block; }
 
 /* =============================================
-   HERO
+   HERO (Optimizado para expansión y Flex)
    ============================================= */
 .hero {
   position: relative;
@@ -34,37 +34,44 @@ body {
   padding: 60px 20px;
   box-sizing: border-box;
   overflow: hidden;
-  display: flex;       /* Agrega esto */
-  flex-direction: column; /* Agrega esto */
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
 /* =============================================
-   HEXÁGONOS DE FONDO
+   HEXÁGONOS DE FONDO (Corrección de posición y clics)
    ============================================= */
 .formas-fondo {
   position: absolute;
-  inset: 0;
-  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
   pointer-events: none;
-  z-index: 0;
 }
-.formas-fondo .hexagono { pointer-events: auto; cursor: pointer; }
 
-.hexagono {
+.formas-fondo .hexagono { 
   position: absolute;
+  display: block !important;
+  pointer-events: auto; 
+  cursor: pointer;
+  /* Centrado exacto sobre sus ejes */
+  margin-left: -30px;
+  margin-top: -30px;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   opacity: 0.6;
-  transition: opacity 0.3s;
+  transition: scale 0.6s ease-out, opacity 0.6s ease-out, transform 0.3s !important;
 }
-.hexagono:hover { opacity: 1; }
+.formas-fondo .hexagono:hover { opacity: 1; }
 
 .hex-morado { background: var(--c-morado); box-shadow: 0 0 20px #b87adf88; }
 .hex-azul   { background: var(--c-azul);   box-shadow: 0 0 20px #2277ee88; }
 .hex-verde  { background: var(--c-verde);  box-shadow: 0 0 20px #3dcc1e88; }
 .hex-coral  { background: var(--c-rojo);   box-shadow: 0 0 20px #e0353588; }
 
-/* Posiciones */
+/* Posiciones de Hexágonos */
 .h-m1{width:120px;height:120px;top:8%;left:5%;animation:flotar-A 22s ease-in-out infinite alternate}
 .h-m2{width:80px;height:80px;top:20%;left:15%;animation:flotar-B 18s ease-in-out infinite alternate}
 .h-m3{width:100px;height:100px;top:60%;left:8%;animation:flotar-C 25s ease-in-out infinite alternate}
@@ -99,7 +106,7 @@ body {
 .circuito { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.12; z-index: 1; pointer-events: none; }
 
 /* =============================================
-   TÍTULO
+   TÍTULO INTERACTIVO
    ============================================= */
 #titulo-interactivo {
   position: relative;
@@ -114,27 +121,84 @@ body {
 #titulo-interactivo span { display: inline-block; transition: transform 0.2s; }
 #titulo-interactivo span:hover { transform: scale(1.3) translateY(-4px); }
 
-/* Colores de letras — blancos con tinte de color */
 .color-morado { color: var(--c-morado); }
 .color-verde  { color: var(--c-verde);  }
 .color-azul   { color: var(--c-azul);   }
 .color-coral  { color: var(--c-rojo);   }
 
 /* =============================================
-   DESCRIPCIÓN
+   DESCRIPCIONES HERO
    ============================================= */
-.descripcion {
+.descripcion-principal {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #cccccc;
+  max-width: 800px;
+  text-align: center;
+  margin: 0 auto 20px auto; 
   position: relative;
-  z-index: 2;
-  max-width: 600px;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #dddddd;
-  margin: 16px auto 28px;
+  z-index: 5;
+}
+
+/* Contenedor del recuadro global */
+.hero-contenido-layout {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  max-width: 1100px;
+  width: 100%;
+  margin: 90px auto 45px auto;
+}
+
+/* RECUADRO CONCEPTUAL MULTICOLOR (Solución clic fantasma) */
+.recuadro-concepto-global {
+  background-color: rgba(15, 15, 20, 0.82);
+  padding: 35px 40px;
+  border-radius: 16px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  pointer-events: none; /* Deja pasar los clics al fondo interactivo */
+}
+
+.recuadro-concepto-global::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, #c792f9, #007fff, #39d31c, #e04333);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.recuadro-col-texto { flex: 1.3; text-align: left; pointer-events: auto; }
+.subtitulo-construccion { font-size: 1.7rem; color: #ffffff; margin: 0 0 15px 0; font-weight: bold; letter-spacing: 0.5px; }
+.descripcion-concepto { font-size: 1.05rem; line-height: 1.65; color: #e5e5e5; margin: 0; }
+
+.recuadro-col-imagen { flex: 0.7; display: flex; justify-content: center; pointer-events: auto; }
+.recuadro-col-imagen img { max-height: 170px; width: auto; display: block; border-radius: 10px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); }
+
+.boton-centro-hero {
+  position: relative;
+  z-index: 5;
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* =============================================
-   GALERÍA SEIS (hero)
+   GALERÍA SEIS (Muestra estática de soporte)
    ============================================= */
 .galeria-seis {
   position: relative;
@@ -164,35 +228,22 @@ body {
 }
 
 /* =============================================
-   SECCIÓN INFO + BOTÓN (MÁRGENES GRANDES APLICADOS)
+   SECCIÓN INFO
    ============================================= */
 .info-destacada {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 28px;
-  padding: 100px 20px; /* Separado arriba y abajo */
+  padding: 100px 20px;
   width: 100%;
 }
-.info-texto {
-  padding: 0 30px;
-  margin-bottom: 25px;
-}
-
-.info-texto h2 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 12px;
-  color: #ffffff;
-}
+.info-texto { padding: 0 30px; margin-bottom: 25px; }
+.info-texto h2 { font-size: 1.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; color: #ffffff; }
 .info-texto p { color: #cccccc; line-height: 1.8; font-size: 0.95rem; }
-.info-imagen img { width: 100%; max-width: 220px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-.boton-centro { display: flex; align-items: center; justify-content: center; }
 
 /* =============================================
-   BOTÓN VER COMPONENTES
+   BOTÓN COMPONENTES
    ============================================= */
 .btn-componentes {
   padding: 14px 28px;
@@ -212,13 +263,11 @@ body {
 .btn-componentes:active { transform: scale(0.98); }
 
 /* =============================================
-   GALERÍA DESPLEGABLE CON FILAS DE 3
+   GALERÍA DESPLEGABLE DINÁMICA (Estructura Unificada)
    ============================================= */
-/* ESTRUCTURA BASE DE LA GALERÍA CON IMÁGENES PEQUEÑAS */
-.galeria {
+#galeria, .galeria {
   display: grid;
-  /* Configuración adaptativa para hacer imágenes compactas */
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
   gap: 24px;
   padding: 0 32px;
   max-height: 0;
@@ -228,68 +277,46 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   transition: max-height 0.6s ease, opacity 0.4s ease, padding 0.4s ease;
+  z-index: 10;
+  position: relative;
 }
 
-/* ESTADO ABIERTO (ACTIVADO POR JS) */
-.galeria.mostrar {
+/* Estado abierto inyectado por JS */
+#galeria.mostrar, .galeria.mostrar {
   max-height: 2000px; 
-  opacity: 1;
+  opacity: 1 !important;
   padding: 32px;
   margin-bottom: 80px; 
 }
 
-/* MINIATURAS INTERNAS */
-.galeria .card {
-  cursor: pointer;
-  overflow: hidden;
-  border-radius: 6px;
-  height: 140px; /* Tamaño estricto e igualitario para todas las tarjetas */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #1a1a1a;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.galeria .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(255,255,255,0.1);
-}
-
-/* IMÁGENES DENTRO DE LAS MINIATURAS */
-.galeria .card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Recorta y llena el espacio sin distorsionar el componente */
-  display: block;
-}
-
-/* RESPONSIVE DESIGN (MÓVILES) */
-@media (max-width: 768px) {
-  .galeria {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    padding: 0 16px;
-  }
-  .galeria.mostrar {
-    padding: 24px 16px;
-  }
-}
+/* Tarjetas internas de componentes */
 .card {
-  flex: 0 0 250px; 
-  background: #1a1a1a;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
+  width: 100%;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
 }
-.card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(184,122,223,0.3); border-color: var(--c-morado); }
-.card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.4s; }
+.card:hover { 
+  transform: translateY(-6px) scale(1.03); 
+  box-shadow: 0 12px 32px rgba(184,122,223,0.3); 
+  border-color: var(--c-morado); 
+}
+
+.card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s;
+}
 .card:hover img { transform: scale(1.06); }
 
 /* =============================================
-   VISORES
+   VISORES MULTIMEDIA
    ============================================= */
 .visor {
   position: fixed; inset: 0;
@@ -313,11 +340,11 @@ body {
 .cerrar-visor:hover { opacity: 1; }
 
 /* =============================================
-   RECTÁNGULOS (MÁRGENES GRANDES APLICADOS)
+   SECCIÓN RECTÁNGULOS
    ============================================= */
 .seccion-rectangulos { 
   background: #111111; 
-  padding: 100px 32px; /* Separado arriba y abajo */
+  padding: 100px 32px;
 }
 .fila-rectangulos { 
   display: grid;
@@ -353,7 +380,7 @@ body {
 .rectangulo-texto { padding: 16px; font-size: 0.88rem; color: #cccccc; line-height: 1.6; }
 
 /* =============================================
-   CARRUSEL
+   CARRUSEL GENERAL
    ============================================= */
 .fondo-bajo-rectangulos { background: #111111; padding: 40px 0 60px; }
 .galeria-carrusel { text-align: center; padding: 0 20px; }
@@ -374,7 +401,7 @@ body {
 .carrusel-btn:hover { background: rgba(34,119,238,0.4); }
 
 /* =============================================
-   BOTÓN EXPERIENCIA
+   BOTONES ADICIONALES
    ============================================= */
 .boton-experiencia-wrap { display: flex; justify-content: center; margin: 32px 0 16px; }
 .btn-experiencia {
@@ -387,9 +414,6 @@ body {
 }
 .btn-experiencia:hover { background: var(--c-azul); color: #111111; box-shadow: 0 0 24px #2277ee66; transform: translateY(-2px); }
 
-/* =============================================
-   PANEL INFERIOR
-   ============================================= */
 .fondo-panel { text-align: center; padding: 32px 20px; }
 .fondo-panel-contenido h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; color: #ffffff; }
 .fondo-panel-contenido p { color: #aaaaaa; margin-bottom: 20px; }
@@ -409,55 +433,26 @@ body {
 .btn-volver:hover { background: var(--c-morado); color: #fff; }
 
 /* =============================================
-   ESTILOS CÓMO JUGAR (AL LADO DEL BOTÓN + MÁRGENES GRANDES)
+   CARRUSEL CÓMO JUGAR
    ============================================= */
 .seccion-como-jugar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 40px;
-  padding: 100px 40px; /* Separado arriba y abajo */
+  padding: 100px 40px;
   background: #111111;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.columna-info-proyecto {
-  flex: 0 0 300px; 
-  text-align: left;
-}
+.columna-info-proyecto { flex: 0 0 300px; text-align: left; }
+.columna-info-proyecto h2 { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #ffffff; margin-bottom: 12px; }
+.columna-info-proyecto p { color: #aaaaaa; font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px; }
 
-.columna-info-proyecto h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #ffffff;
-  margin-bottom: 12px;
-}
-
-.columna-info-proyecto p {
-  color: #aaaaaa;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-
-.contenedor-carrusel-jugar {
-  flex: 1;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory; 
-  scrollbar-width: none; 
-}
-
-.contenedor-carrusel-jugar::-webkit-scrollbar {
-  display: none; 
-}
-
-.track-jugar {
-  display: flex;
-  gap: 20px;
-}
+.contenedor-carrusel-jugar { flex: 1; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.contenedor-carrusel-jugar::-webkit-scrollbar { display: none; }
+.track-jugar { display: flex; gap: 20px; }
 
 .tarjeta-jugar {
   flex: 0 0 calc(50% - 10px); 
@@ -468,22 +463,22 @@ body {
   background: #1a1a1a;
   transition: transform 0.3s;
 }
-
-.tarjeta-jugar:hover {
-  transform: scale(1.02);
-  border-color: var(--c-azul);
-}
-
-.tarjeta-jugar img {
-  width: 100%;
-  aspect-ratio: 16/9;
-  object-fit: cover;
-  display: block;
-}
+.tarjeta-jugar:hover { transform: scale(1.02); border-color: var(--c-azul); }
+.tarjeta-jugar img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
 
 /* =============================================
-   RESPONSIVE FINAL
+   RESPONSIVE FINAL DISPOSITIVOS MÓVILES
    ============================================= */
+@media (max-width: 850px) {
+  .recuadro-concepto-global {
+    flex-direction: column;
+    padding: 30px;
+    gap: 30px;
+  }
+  .recuadro-col-texto { text-align: center; }
+  .hero-contenido-layout { margin: 50px auto 30px auto; }
+}
+
 @media (max-width: 768px) {
   .info-destacada { padding: 40px 20px; text-align: center; }
   .info-imagen { display: none; }
@@ -491,505 +486,20 @@ body {
   .fila-rectangulos { grid-template-columns: 1fr; }
   .carrusel-item { flex: 0 0 220px; }
   .seccion-rectangulos { padding: 40px 20px; }
+  
   .seccion-como-jugar {
     flex-direction: column;
     text-align: center;
     padding: 40px 20px;
   }
-  .columna-info-proyecto {
-    flex: 1;
-    text-align: center;
-  }
-  .tarjeta-jugar {
-    flex: 0 0 100%; 
-  }
-}/* =============================================
-   AJUSTES HERO: CONSTRUCCIÓN Y CONEXIÓN
-   ============================================= */
-
-/* Forzar que el contenedor Hero mida el 100% de lo que ocupe su contenido */
-.hero {
-  position: relative;
-  width: 100%;
-  padding: 60px 20px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-/* El lienzo del fondo ahora acompaña el crecimiento del texto hacia abajo */
-.formas-fondo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; 
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Permitir clics en los hexágonos que flotan en el fondo */
-.formas-fondo .hexagono {
-  position: absolute;
-  pointer-events: auto; 
-  cursor: pointer;
-}
-
-/* Caja contenedora para poner el texto al lado de la imagen */
-.hero-contenido-layout {
-  position: relative;
-  z-index: 2; /* Por encima de los hexágonos */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-/* Columna izquierda: Párrafo + Subtítulo */
-.hero-columna-texto {
-  flex: 1;
-  text-align: left;
-}
-
-/* Estilo del nuevo texto */
-.subtitulo-construccion {
-  font-size: 1.8rem;
-  color: #ffffff;
-  margin-top: 15px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-/* Imagen de la derecha del texto */
-.info-imagen img {
-  max-height: 180px;
-  width: auto;
-  display: block;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-/* Ajuste para pantallas pequeñas (móviles) */
-@media (max-width: 768px) {
-  .hero-contenido-layout {
-    flex-direction: column;
-    text-align: center;
-    gap: 20px;
-  }
-  .hero-columna-texto {
-    text-align: center;
-  }
-}/* =============================================
-   NUEVOS AJUSTES DE DISEÑO — HERO EXPERT
-   ============================================= */
-
-/* Forzar que el contenedor Hero se expanda con el contenido */
-.hero {
-  position: relative;
-  width: 100%;
-  padding: 60px 20px;
-  box-sizing: border-box;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Lienzo de fondo dinámico */
-.formas-fondo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; 
-  z-index: 1;
-  pointer-events: none;
-}
-
-.formas-fondo .hexagono {
-  position: absolute;
-  pointer-events: auto; 
-  cursor: pointer;
-}
-
-/* Texto que va justo debajo del título principal con separación */
-.descripcion-principal {
-  font-size: 1.15rem;
-  line-height: 1.6;
-  color: #cccccc;
-  max-width: 800px;
-  text-align: center;
-  margin: 0 auto 50px auto; /* Separación de 50px con el recuadro de abajo */
-  position: relative;
-  z-index: 5;
-}
-
-/* Alineación paralela del recuadro y la imagen */
-.hero-contenido-layout {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  max-width: 1050px;
-  width: 100%;
-  margin: 0 auto 35px auto;
-}
-
-.hero-columna-texto {
-  flex: 1.2;
-}
-
-/* RECUADRO CON BORDE DE LOS 4 COLORES (Morado, Azul, Verde, Coral) */
-.recuadro-concepto {
-  background-color: rgba(15, 15, 20, 0.75); /* Fondo oscuro semitransparente */
-  padding: 25px 30px;
-  border-radius: 12px;
-  position: relative;
-  text-align: left;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-/* Truco CSS para generar el borde de 4 colores exactos sin romperse */
-.recuadro-concepto::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 12px;
-  padding: 2px; /* Grosor del borde */
-  background: linear-gradient(135deg, #c792f9, #007fff, #39d31c, #e04333); /* Morado, azul, verde, coral */
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-.subtitulo-construccion {
-  font-size: 1.6rem;
-  color: #ffffff;
-  margin: 0 0 12px 0;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
-
-.descripcion-concepto {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #e0e0e0;
-  margin: 0;
-}
-
-/* Imagen en paralelo */
-.info-imagen {
-  flex: 0.8;
-  display: flex;
-  justify-content: center;
-}
-
-.info-imagen img {
-  max-height: 180px;
-  width: auto;
-  display: block;
-  border-radius: 8px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-}
-
-/* Botón centrado abajo del todo */
-.boton-centro-hero {
-  position: relative;
-  z-index: 5;
-  margin-top: 10px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-/* Responsive para celulares */
-@media (max-width: 768px) {
-  .hero-contenido-layout {
-    flex-direction: column;
-    gap: 25px;
-  }
-  .recuadro-concepto {
-    text-align: center;
-  }
-}/* ==========================================================
-   ESTILOS COMPLETOS — RECUADRO CON BORDE DE 4 COLORES (FLEX)
-   ========================================================== */
-
-.hero {
-  position: relative;
-  width: 100%;
-  padding: 60px 20px;
-  box-sizing: border-box;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.formas-fondo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; 
-  z-index: 1;
-  pointer-events: none;
-}
-
-.formas-fondo .hexagono {
-  position: absolute;
-  pointer-events: auto; 
-  cursor: pointer;
-}
-
-/* Espacio inferior de la descripción superior */
-.descripcion-principal {
-  font-size: 1.15rem;
-  line-height: 1.6;
-  color: #cccccc;
-  max-width: 800px;
-  text-align: center;
-  margin: 0 auto 20px auto; 
-  position: relative;
-  z-index: 5;
-}
-
-/* Contenedor que empuja el recuadro bien abajo para dar aire al título */
-.hero-contenido-layout {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  justify-content: center;
-  max-width: 1100px;
-  width: 100%;
-  margin: 90px auto 45px auto; /* 90px de margen arriba para que quede más abajo */
-}
-
-/* RECUADRO GLOBAL: Combina flex horizontal y máscara de fondo */
-.recuadro-concepto-global {
-  background-color: rgba(15, 15, 20, 0.82);
-  padding: 35px 40px;
-  border-radius: 16px;
-  position: relative;
-  display: flex;
-  align-items: center; /* Alineación vertical al centro */
-  justify-content: space-between;
-  gap: 40px;
-  width: 100%;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-  box-sizing: border-box;
-}
-
-/* Máscara del contorno degradado con los 4 colores */
-.recuadro-concepto-global::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 16px;
-  padding: 2px; /* Grosor del borde */
-  background: linear-gradient(135deg, #c792f9, #007fff, #39d31c, #e04333); /* Morado, azul, verde, coral */
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Columna Izquierda: El Texto */
-.recuadro-col-texto {
-  flex: 1.3;
-  text-align: left;
-}
-
-.subtitulo-construccion {
-  font-size: 1.7rem;
-  color: #ffffff;
-  margin: 0 0 15px 0;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
-
-.descripcion-concepto {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: #e5e5e5;
-  margin: 0;
-}
-
-/* Columna Derecha: La Imagen */
-.recuadro-col-imagen {
-  flex: 0.7;
-  display: flex;
-  justify-content: center;
-}
-
-.recuadro-col-imagen img {
-  max-height: 170px;
-  width: auto;
-  display: block;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-}
-
-/* Botón Ver Componentes abajo del recuadro */
-.boton-centro-hero {
-  position: relative;
-  z-index: 5;
-  margin-top: 15px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-/* Vista responsiva para móviles */
-@media (max-width: 850px) {
-  .recuadro-concepto-global {
-    flex-direction: column;
-    padding: 30px;
-    gap: 30px;
-  }
-  .recuadro-col-texto {
-    text-align: center;
-  }
-  .hero-contenido-layout {
-    margin: 50px auto 30px auto;
-  }
-}/* 1. Le decimos al recuadro que sea como un fantasma y deje pasar los clics al fondo */
-.recuadro-concepto-global {
-  pointer-events: none;
-}
-
-/* 2. Le devolvemos el comportamiento normal al texto e imagen de adentro */
-.recuadro-col-texto, 
-.recuadro-col-imagen {
-  pointer-events: auto;
-}/* ========================================================
-   CORRECCIÓN DEFINITIVA PARA LA APARICIÓN DE HEXÁGONOS
-   ======================================================== */
-
-/* Asegurar que el contenedor base permita posicionar los hijos */
-.formas-fondo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Forzar propiedades críticas en TODOS los hexágonos */
-.formas-fondo .hexagono {
-  position: absolute;
-  /* Ajusta estos dos valores (width y height) al tamaño real de tus hexágonos si es necesario */
-  width: 60px; 
-  height: 60px;
+  .columna-info-proyecto { flex: 1; text-align: center; }
+  .tarjeta-jugar { flex: 0 0 100%; }
   
-  /* Esto asegura que se posicionen exactamente en el centro de la línea blanca */
-  margin-left: -30px;  /* Debe ser la mitad exacta del width */
-  margin-top: -30px;   /* Debe ser la mitad exacta del height */
-  
-  display: block !important;
-  pointer-events: auto;
-  cursor: pointer;
-  
-  /* Declaramos las propiedades de animación aquí para que el navegador las reconozca */
-  transition: scale 0.6s ease-out, opacity 0.6s ease-out !important;
-}/* ========================================================
-   CORRECCIÓN PARA FORZAR LA VISUALIZACIÓN DE LA GALERÍA
-   ======================================================== */
-
-/* Fuerza a que la sección de la galería exista y se muestre en pantalla */
-#galeria, .galeria {
-  display: grid !important; /* O 'flex' si usabas flexbox para tus tarjetas */
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: relative;
-  z-index: 10;
-  padding: 40px 20px;
-}
-
-/* Asegura que las tarjetas de imágenes dentro de la galería tengan tamaño */
-.galeria .card {
-  display: block !important;
-  min-height: 200px; /* Le da una altura mínima por si colapsaron */
-  background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil de prueba */
-}
-
-.galeria .card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}/* La galería inicia oculta */
-.galeria {
-  display: none; 
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 40px 20px;
-}
-
-/* Estilo para las tarjetas de los componentes */
-.card {
-  cursor: pointer;
-  overflow: hidden;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: scale(1.05);
-}
-
-.card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Estilo para el visor de imagen completa (por si acaso) */
-.visor-galeria {
-  display: none; /* Inicia oculto */
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.9);
-  justify-content: center;
-  align-items: center;
-}/* =============================================
-   GALERÍA DESPLEGABLE CON FILAS DE 3
-   ============================================= */
-.galeria {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Crea exactamente 3 columnas principales */
-  gap: 24px;
-  padding: 0 32px;
-  max-height: 0;          /* Inicialmente colapsado */
-  overflow: hidden; 
-  opacity: 0;
-  background: #111111;
-  transition: max-height 0.6s ease, opacity 0.4s ease, padding 0.4s ease;
-}
-
-/* Cuando el botón añade esta clase vía JS, se despliega suavemente */
-.galeria.mostrar {
-  max-height: 2000px; /* Un valor lo suficientemente alto para albergar las 7 imágenes */
-  opacity: 1;
-  padding: 32px;
-  margin-bottom: 80px; 
-}
-
-/* Ajuste responsive para celulares: pasa de 3 columnas a 1 sola */
-@media (max-width: 768px) {
-  .galeria {
+  #galeria, .galeria {
     grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+  #galeria.mostrar, .galeria.mostrar {
+    padding: 24px 16px;
   }
 }
