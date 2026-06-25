@@ -692,4 +692,51 @@ body {
   stroke: #3dcc1e; /* Cambia el color de la línea a verde (puedes cambiarlo por el color que quieras) */
   fill: rgba(184, 122, 223, 0.15); /* Le da un leve fondo de color morado transparente */
   transition: stroke 0.3s ease, fill 0.3s ease;
+}/* El recuadro contenedor para la sección Cómo Jugar */
+.seccion-como-jugar {
+  background: rgba(30, 30, 40, 0.6); /* Fondo oscuro semitransparente */
+  border: 2px solid #3dcc1e;         /* Borde verde neon (puedes cambiar el color) */
+  border-radius: 12px;               /* Bordes redondeados profesionales */
+  padding: 30px;                     /* Espacio interno para que respire el texto */
+  margin: 40px auto;                 /* Separa el recuadro de lo que está arriba y abajo */
+  max-width: 1200px;                 /* Evita que se estire demasiado en pantallas gigantes */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 
+              0 0 15px rgba(61, 204, 30, 0.2); /* Sombra externa y un leve brillo verde */
+  
+  /* Mantiene la distribución en filas o columnas */
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* La columna de texto dentro del recuadro */
+.columna-info-proyecto {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Título dentro del recuadro */
+.columna-info-proyecto h2 {
+  color: white;
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+/* Párrafo dentro del recuadro */
+.columna-info-proyecto p {
+  color: #e0e0e0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+/* Asegurar que se adapte bien si se mira desde un celular */
+@media (max-width: 768px) {
+  .seccion-como-jugar {
+    flex-direction: column; /* En celulares, el texto arriba y el carrusel abajo */
+    padding: 20px;
+  }
 }
