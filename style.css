@@ -445,10 +445,44 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
+.columna-info {
+  background: rgba(15,15,20,0.82);
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
 
-.columna-info-proyecto { flex: 0 0 300px; text-align: left; }
-.columna-info-proyecto h2 { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #ffffff; margin-bottom: 12px; }
-.columna-info-proyecto p { color: #aaaaaa; font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px; }
+  backdrop-filter: blur(8px);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.columna-info::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+
+  background: linear-gradient(
+    135deg,
+    #c792f9,
+    #007fff,
+    #39d31c,
+    #e04333
+  );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+}
 
 .contenedor-carrusel-jugar { flex: 1; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .contenedor-carrusel-jugar::-webkit-scrollbar { display: none; }
@@ -502,4 +536,160 @@ body {
   #galeria.mostrar, .galeria.mostrar {
     padding: 24px 16px;
   }
+}.hexagono {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  z-index: 5;
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  );
+}.logo {
+  filter: drop-shadow(0 0 10px #b87adf)
+          drop-shadow(0 0 20px #2277ee);
+}/* =============================================
+   SECCIÓN 3 COLUMNAS
+   ============================================= */
+
+.seccion-tres-columnas {
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 30px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.columna-info {
+  background: rgba(15,15,20,0.82);
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.columna-info:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+
+.columna-info img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.columna-info h3 {
+  font-size: 1.3rem;
+  color: white;
+  margin: 20px 0 10px;
+}
+
+.columna-info p {
+  color: #cccccc;
+  line-height: 1.6;
+  padding: 0 20px 25px;
+}/* =============================================
+   BOTÓN HEXÁGONO EXPERIENCIA
+   ============================================= */
+
+.hex-boton-experiencia {
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  position: relative;
+  margin: 40px auto;
+
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  );
+
+  background: rgba(15,15,20,0.9);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 5;
+}
+
+/* Borde brillante degradado */
+.hex-boton-experiencia::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 3px;
+
+  background: linear-gradient(
+    135deg,
+    #c792f9,
+    #007fff,
+    #39d31c,
+    #e04333
+  );
+
+  clip-path: inherit;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+}
+
+/* Texto encima del borde */
+.hex-boton-experiencia span {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hover glow */
+.hex-boton-experiencia:hover {
+  transform: scale(1.08) rotate(2deg);
+  box-shadow:
+    0 0 15px rgba(199,146,249,0.5),
+    0 0 25px rgba(0,127,255,0.3),
+    0 0 35px rgba(57,211,28,0.2);
+}/* Selecciona el enlace que envuelve al logo */
+.hero a:has(.logo) {
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Efecto al pasar el cursor (Mouse Over) */
+.hero a:has(.logo):hover {
+  /* Hace que el logo crezca un poquito */
+  transform: scale(1.05); 
+  
+  /* Le cambia el color del brillo blanco por un tono morado/neon vibrante */
+  filter: drop-shadow(0 0 15px #b87adf); 
+}
+
+/* También podemos hacer que el trazado interno cambie cuando pasas el mouse por el enlace */
+.hero a:has(.logo):hover .logo path {
+  stroke: #3dcc1e; /* Cambia el color de la línea a verde (puedes cambiarlo por el color que quieras) */
+  fill: rgba(184, 122, 223, 0.15); /* Le da un leve fondo de color morado transparente */
+  transition: stroke 0.3s ease, fill 0.3s ease;
 }
