@@ -962,5 +962,26 @@ body {
   gap: 15px;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: relative; /* Bloquea de forma absoluta el desbordamiento horizontal en todo el sitio */
+body, html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Evita que los hexágonos HTML o el SVG del fondo estiren el contenedor .hero */
+.hero {
+    position: relative;
+    overflow: hidden; 
+}
+}/* Por defecto la galería está oculta */
+#galeria-componentes {
+    display: none; 
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* Cuando JS le añade la clase 'mostrar', se hace visible */
+#galeria-componentes.mostrar {
+    display: block; /* o 'grid' / 'flex' según tu diseño */
+    opacity: 1;
 }
