@@ -1,77 +1,55 @@
-/* =============================================
-   VARIABLES DE COLOR
-   ============================================= */
 :root {
   --c-rojo:   #e03535;
   --c-verde:  #3dcc1e;
   --c-morado: #b87adf;
   --c-azul:   #2277ee;
 }
-
-/* =============================================
-   RESET Y BASE
-   ============================================= */
+ 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 body {
   background: #111111;
   color: #ffffff;
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
-
-/* =============================================
-   VISTAS
-   ============================================= */
+ 
 .vista { display: none; }
 .vista.activa { display: block; }
-
-/* =============================================
-   HERO (Optimizado para expansión y Flex)
-   ============================================= */
+ 
 .hero {
   position: relative;
   width: 100%;
+  min-height: 600px;
   padding: 60px 20px;
   box-sizing: border-box;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-/* =============================================
-   HEXÁGONOS DE FONDO (Corrección de posición y clics)
-   ============================================= */
+ 
 .formas-fondo {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   z-index: 1;
   pointer-events: none;
 }
-
-.formas-fondo .hexagono { 
+ 
+.formas-fondo .hexagono {
   position: absolute;
-  display: block !important;
-  pointer-events: auto; 
+  pointer-events: auto;
   cursor: pointer;
-  /* Centrado exacto sobre sus ejes */
-  margin-left: -30px;
-  margin-top: -30px;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   opacity: 0.6;
-  transition: scale 0.6s ease-out, opacity 0.6s ease-out, transform 0.3s !important;
+  transition: opacity 0.3s;
 }
 .formas-fondo .hexagono:hover { opacity: 1; }
-
+ 
 .hex-morado { background: var(--c-morado); box-shadow: 0 0 20px #b87adf88; }
 .hex-azul   { background: var(--c-azul);   box-shadow: 0 0 20px #2277ee88; }
 .hex-verde  { background: var(--c-verde);  box-shadow: 0 0 20px #3dcc1e88; }
 .hex-coral  { background: var(--c-rojo);   box-shadow: 0 0 20px #e0353588; }
-
-/* Posiciones de Hexágonos */
+ 
 .h-m1{width:120px;height:120px;top:8%;left:5%;animation:flotar-A 22s ease-in-out infinite alternate}
 .h-m2{width:80px;height:80px;top:20%;left:15%;animation:flotar-B 18s ease-in-out infinite alternate}
 .h-m3{width:100px;height:100px;top:60%;left:8%;animation:flotar-C 25s ease-in-out infinite alternate}
@@ -92,302 +70,223 @@ body {
 .h-c3{width:105px;height:105px;top:20%;left:80%;animation:flotar-A 21s ease-in-out infinite alternate}
 .h-c4{width:65px;height:65px;top:65%;left:90%;animation:flotar-B 25s ease-in-out infinite alternate}
 .h-c5{width:85px;height:85px;top:35%;left:60%;animation:flotar-E 20s ease-in-out infinite alternate}
-
+ 
 @keyframes flotar-A{from{transform:translate(0,0) rotate(0deg)}to{transform:translate(20px,-30px) rotate(15deg)}}
 @keyframes flotar-B{from{transform:translate(0,0) rotate(5deg)}to{transform:translate(-25px,20px) rotate(-10deg)}}
 @keyframes flotar-C{from{transform:translate(0,0) rotate(-5deg)}to{transform:translate(15px,25px) rotate(20deg)}}
 @keyframes flotar-D{from{transform:translate(10px,5px) rotate(0deg)}to{transform:translate(-15px,-20px) rotate(-15deg)}}
 @keyframes flotar-E{from{transform:translate(-10px,0px) rotate(10deg)}to{transform:translate(25px,15px) rotate(-5deg)}}
-
-/* =============================================
-   LOGO Y CIRCUITO
-   ============================================= */
-.logo { width: 120px; height: 180px; position: relative; z-index: 2; margin-bottom: 10px; }
-.circuito { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.12; z-index: 1; pointer-events: none; }
-
-/* =============================================
-   TÍTULO INTERACTIVO
-   ============================================= */
+ 
+.logo {
+  width: 120px; height: 180px;
+  position: relative; z-index: 2; margin-bottom: 10px;
+  filter: drop-shadow(0 0 10px #b87adf) drop-shadow(0 0 20px #2277ee);
+}
+.circuito {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0.12; z-index: 1; pointer-events: none;
+}
+ 
 #titulo-interactivo {
-  position: relative;
-  z-index: 2;
+  position: relative; z-index: 2;
   font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 900;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin: 10px 0;
-  line-height: 1;
+  font-weight: 900; letter-spacing: 0.15em;
+  text-transform: uppercase; margin: 10px 0; line-height: 1;
 }
-#titulo-interactivo span { display: inline-block; transition: transform 0.2s; }
-#titulo-interactivo span:hover { transform: scale(1.3) translateY(-4px); }
-
-.color-morado { color: var(--c-morado); }
-.color-verde  { color: var(--c-verde);  }
-.color-azul   { color: var(--c-azul);   }
-.color-coral  { color: var(--c-rojo);   }
-
-/* =============================================
-   DESCRIPCIONES HERO
-   ============================================= */
+#titulo-interactivo span { display: inline-block; transition: color 0.2s, transform 0.2s; }
+ 
 .descripcion-principal {
-  font-size: 1.15rem;
-  line-height: 1.6;
-  color: #cccccc;
-  max-width: 800px;
-  text-align: center;
-  margin: 0 auto 20px auto; 
-  position: relative;
-  z-index: 5;
+  font-size: 1.15rem; line-height: 1.6; color: #cccccc;
+  max-width: 800px; text-align: center;
+  margin: 0 auto 20px auto;
+  position: relative; z-index: 5;
 }
-
-/* Contenedor del recuadro global */
+ 
 .hero-contenido-layout {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  justify-content: center;
-  max-width: 1100px;
-  width: 100%;
+  position: relative; z-index: 5;
+  display: flex; justify-content: center;
+  max-width: 1100px; width: 100%;
   margin: 90px auto 45px auto;
 }
-
-/* RECUADRO CONCEPTUAL MULTICOLOR (Solución clic fantasma) */
+ 
 .recuadro-concepto-global {
-  background-color: rgba(15, 15, 20, 0.82);
-  padding: 35px 40px;
-  border-radius: 16px;
+  background-color: rgba(15,15,20,0.82);
+  padding: 35px 40px; border-radius: 16px;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  width: 100%;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-  box-sizing: border-box;
-  pointer-events: none; /* Deja pasar los clics al fondo interactivo */
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 40px;
+  width: 100%; backdrop-filter: blur(8px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+  box-sizing: border-box; pointer-events: none;
 }
-
 .recuadro-concepto-global::before {
   content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 16px;
-  padding: 2px;
-  background: linear-gradient(135deg, #c792f9, #007fff, #39d31c, #e04333);
+  position: absolute; top:0;left:0;right:0;bottom:0;
+  border-radius: 16px; padding: 2px;
+  background: linear-gradient(135deg,#c792f9,#007fff,#39d31c,#e04333);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  -webkit-mask-composite: xor; mask-composite: exclude;
   pointer-events: none;
 }
-
+ 
 .recuadro-col-texto { flex: 1.3; text-align: left; pointer-events: auto; }
-.subtitulo-construccion { font-size: 1.7rem; color: #ffffff; margin: 0 0 15px 0; font-weight: bold; letter-spacing: 0.5px; }
+.subtitulo-construccion { font-size: 1.7rem; color: #fff; margin: 0 0 15px; font-weight: bold; }
 .descripcion-concepto { font-size: 1.05rem; line-height: 1.65; color: #e5e5e5; margin: 0; }
-
 .recuadro-col-imagen { flex: 0.7; display: flex; justify-content: center; pointer-events: auto; }
-.recuadro-col-imagen img { max-height: 170px; width: auto; display: block; border-radius: 10px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); }
-
+.recuadro-col-imagen img { max-height: 170px; width: auto; display: block; border-radius: 10px; }
+ 
 .boton-centro-hero {
-  position: relative;
-  z-index: 5;
-  margin-top: 15px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  position: relative; z-index: 5;
+  margin-top: 15px; width: 100%;
+  display: flex; justify-content: center;
 }
-
-/* =============================================
-   GALERÍA SEIS (Muestra estática de soporte)
-   ============================================= */
-.galeria-seis {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto;
-}
-.galeria-seis img {
-  width: 100%; aspect-ratio: 4/3; object-fit: cover;
-  border-radius: 8px; cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.12);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.galeria-seis img:hover { transform: scale(1.05); box-shadow: 0 0 16px #b87adf66; }
-
-/* =============================================
-   LÍNEA DIVISORA
-   ============================================= */
-.linea-divisora {
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--c-morado), var(--c-azul), var(--c-verde), transparent);
-  opacity: 0.7;
-}
-
-/* =============================================
-   SECCIÓN INFO
-   ============================================= */
-.info-destacada {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  padding: 100px 20px;
-  width: 100%;
-}
-.info-texto { padding: 0 30px; margin-bottom: 25px; }
-.info-texto h2 { font-size: 1.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; color: #ffffff; }
-.info-texto p { color: #cccccc; line-height: 1.8; font-size: 0.95rem; }
-
-/* =============================================
-   BOTÓN COMPONENTES
-   ============================================= */
+ 
 .btn-componentes {
   padding: 14px 28px;
   background: linear-gradient(135deg, var(--c-morado), var(--c-azul));
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  transition: transform 0.25s, box-shadow 0.25s;
-  white-space: nowrap;
+  color: #fff; border: none; border-radius: 50px;
+  font-size: 1rem; font-weight: 600; letter-spacing: 0.06em;
+  cursor: pointer; white-space: nowrap;
   box-shadow: 0 4px 20px rgba(184,122,223,0.4);
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 .btn-componentes:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 28px rgba(184,122,223,0.6); }
 .btn-componentes:active { transform: scale(0.98); }
-
-/* =============================================
-   GALERÍA DESPLEGABLE DINÁMICA (Estructura Unificada)
-   ============================================= */
-#galeria, .galeria {
+ 
+/* GALERÍA */
+#galeria {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 24px;
-  padding: 0 32px;
   max-height: 0;
-  overflow: hidden; 
+  overflow: hidden;
   opacity: 0;
+  padding: 0 32px;
   background: #111111;
   max-width: 1200px;
   margin: 0 auto;
-  transition: max-height 0.6s ease, opacity 0.4s ease, padding 0.4s ease;
-  z-index: 10;
-  position: relative;
+  transition: max-height 0.7s ease, opacity 0.5s ease, padding 0.4s ease;
 }
-
-/* Estado abierto inyectado por JS */
-#galeria.mostrar, .galeria.mostrar {
-  max-height: 2000px; 
-  opacity: 1 !important;
+#galeria.abierta {
+  max-height: 2000px;
+  opacity: 1;
   padding: 32px;
-  margin-bottom: 80px; 
+  margin-bottom: 60px;
 }
-
-/* Tarjetas internas de componentes */
+ 
 .card {
-  width: 100%;
-  cursor: pointer;
-  overflow: hidden;
-  border-radius: 12px;
-  background: #1a1a1a;
+  cursor: pointer; overflow: hidden;
+  border-radius: 12px; background: #1a1a1a;
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
 }
-.card:hover { 
-  transform: translateY(-6px) scale(1.03); 
-  box-shadow: 0 12px 32px rgba(184,122,223,0.3); 
-  border-color: var(--c-morado); 
-}
-
-.card img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s;
-}
-.card:hover img { transform: scale(1.06); }
-
-/* =============================================
-   VISORES MULTIMEDIA
-   ============================================= */
+.card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 32px rgba(184,122,223,0.3); border-color: var(--c-morado); }
+.card img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.card-titulo { padding: 12px 16px; font-size: 0.9rem; color: #ccc; }
+ 
+/* VISORES */
 .visor {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.93);
-  display: none; align-items: center; justify-content: center;
-  z-index: 9000;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.93);
+  display: none; align-items: center; justify-content: center; z-index: 9000;
 }
 .visor span { position: absolute; top: 20px; right: 30px; font-size: 2.5rem; color: #fff; cursor: pointer; opacity: 0.8; }
 .visor span:hover { opacity: 1; }
 .visor img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; }
-
+ 
 .visor-galeria {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.95);
-  display: none; align-items: center; justify-content: center;
-  z-index: 9000;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+  display: none; align-items: center; justify-content: center; z-index: 9000;
 }
 .visor-galeria.activo { display: flex; }
 .visor-galeria img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; }
 .cerrar-visor { position: absolute; top: 20px; right: 28px; font-size: 2.5rem; color: #fff; background: none; border: none; cursor: pointer; opacity: 0.8; }
 .cerrar-visor:hover { opacity: 1; }
-
-/* =============================================
-   SECCIÓN RECTÁNGULOS
-   ============================================= */
-.seccion-rectangulos { 
-  background: #111111; 
-  padding: 100px 32px;
-}
-.fila-rectangulos { 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px; 
-  max-width: 1200px; 
-  margin: 0 auto;
+ 
+/* 4 RECTÁNGULOS */
+.seccion-rectangulos { background: #111111; padding: 80px 32px; }
+.fila-rectangulos {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+  gap: 24px; max-width: 1200px; margin: 0 auto;
 }
 .rectangulo-contenedor {
   border-radius: 16px; overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.1); background: #1a1a1a;
   display: flex; flex-direction: column;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .rectangulo-contenedor:hover { transform: translateY(-4px); }
-
-.rec-morado { border-color: #b87adf44; }
-.rec-morado:hover { box-shadow: 0 8px 32px #b87adf55; }
-.rec-azul   { border-color: #2277ee44; }
-.rec-azul:hover   { box-shadow: 0 8px 32px #2277ee55; }
-.rec-verde  { border-color: #3dcc1e44; }
-.rec-verde:hover  { box-shadow: 0 8px 32px #3dcc1e55; }
-.rec-coral  { border-color: #e0353544; }
-.rec-coral:hover  { box-shadow: 0 8px 32px #e0353555; }
-
+.rec-morado { border-color: #b87adf44; } .rec-morado:hover { box-shadow: 0 8px 32px #b87adf55; }
+.rec-azul   { border-color: #2277ee44; } .rec-azul:hover   { box-shadow: 0 8px 32px #2277ee55; }
+.rec-verde  { border-color: #3dcc1e44; } .rec-verde:hover  { box-shadow: 0 8px 32px #3dcc1e55; }
+.rec-coral  { border-color: #e0353544; } .rec-coral:hover  { box-shadow: 0 8px 32px #e0353555; }
 .rectangulo-negro-interno { background: #0a0a0a; overflow: hidden; aspect-ratio: 16/9; }
 .rec-morado .rectangulo-negro-interno { border-top: 3px solid var(--c-morado); }
-.rec-azul   .rectangulo-negro-interno { border-top: 3px solid var(--c-azul);   }
-.rec-verde  .rectangulo-negro-interno { border-top: 3px solid var(--c-verde);  }
-.rec-coral  .rectangulo-negro-interno { border-top: 3px solid var(--c-rojo);   }
+.rec-azul   .rectangulo-negro-interno { border-top: 3px solid var(--c-azul); }
+.rec-verde  .rectangulo-negro-interno { border-top: 3px solid var(--c-verde); }
+.rec-coral  .rectangulo-negro-interno { border-top: 3px solid var(--c-rojo); }
 .rectangulo-negro-interno img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .rectangulo-texto { padding: 16px; font-size: 0.88rem; color: #cccccc; line-height: 1.6; }
-
-/* =============================================
-   CARRUSEL GENERAL
-   ============================================= */
+ 
+/* 4 FLIP CARDS */
+.seccion-flip-cards { padding: 80px 20px; background: #111111; text-align: center; }
+.seccion-flip-cards h2 {
+  font-size: 1.8rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 40px; color: #fff;
+}
+.contenedor-flip {
+  display: flex; justify-content: center;
+  gap: 28px; flex-wrap: wrap;
+  max-width: 1100px; margin: 0 auto;
+}
+.flip-card { width: 220px; height: 320px; perspective: 1000px; cursor: pointer; }
+.flip-card-inner {
+  position: relative; width: 100%; height: 100%;
+  transition: transform 0.75s cubic-bezier(0.4,0.2,0.2,1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-front, .flip-card-back {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 14px; overflow: hidden;
+}
+.flip-card-front { border: 1px solid rgba(255,255,255,0.12); }
+.flip-card-front img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.flip-card-back {
+  transform: rotateY(180deg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px 18px; gap: 12px;
+}
+.flip-card-back h3 { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin: 0; }
+.flip-card-back p  { font-size: 0.88rem; line-height: 1.6; color: #e0e0e0; margin: 0; }
+.flip-card:nth-child(1) .flip-card-back { background: linear-gradient(160deg,#1a0a2e,#2d1458); border: 2px solid var(--c-morado); }
+.flip-card:nth-child(1) .flip-card-back h3 { color: var(--c-morado); }
+.flip-card:nth-child(2) .flip-card-back { background: linear-gradient(160deg,#0a1020,#0d2860); border: 2px solid var(--c-azul); }
+.flip-card:nth-child(2) .flip-card-back h3 { color: var(--c-azul); }
+.flip-card:nth-child(3) .flip-card-back { background: linear-gradient(160deg,#071a04,#0d3a08); border: 2px solid var(--c-verde); }
+.flip-card:nth-child(3) .flip-card-back h3 { color: var(--c-verde); }
+.flip-card:nth-child(4) .flip-card-back { background: linear-gradient(160deg,#200808,#4a1010); border: 2px solid var(--c-rojo); }
+.flip-card:nth-child(4) .flip-card-back h3 { color: var(--c-rojo); }
+ 
+/* CÓMO JUGAR */
+.seccion-como-jugar {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 40px;
+  padding: 80px 40px; background: #111111;
+  max-width: 1200px; margin: 0 auto;
+}
+ 
+/* CARRUSEL */
 .fondo-bajo-rectangulos { background: #111111; padding: 40px 0 60px; }
 .galeria-carrusel { text-align: center; padding: 0 20px; }
-.galeria-carrusel h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px; color: #ffffff; }
+.galeria-carrusel h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px; color: #fff; }
 .carrusel-contenedor { display: flex; align-items: center; gap: 12px; max-width: 900px; margin: 0 auto; }
 .carrusel-track-wrapper { flex: 1; overflow: hidden; border-radius: 12px; }
-.carrusel-track { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; }
+.carrusel-track { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .carrusel-track::-webkit-scrollbar { display: none; }
 .carrusel-item { flex: 0 0 280px; scroll-snap-align: start; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
 .carrusel-item img { width: 100%; height: 180px; object-fit: cover; display: block; }
@@ -399,578 +298,704 @@ body {
   transition: background 0.2s; flex-shrink: 0;
 }
 .carrusel-btn:hover { background: rgba(34,119,238,0.4); }
-
-/* =============================================
-   BOTONES ADICIONALES
-   ============================================= */
-.boton-experiencia-wrap { display: flex; justify-content: center; margin: 32px 0 16px; }
+ 
 .btn-experiencia {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 14px 30px; background: transparent;
-  border: 2px solid var(--c-azul); color: var(--c-azul);
-  border-radius: 50px; font-size: 1rem; font-weight: 600;
-  letter-spacing: 0.06em; cursor: pointer; text-decoration: none;
-  transition: background 0.25s, color 0.25s, box-shadow 0.25s, transform 0.25s;
-}
-.btn-experiencia:hover { background: var(--c-azul); color: #111111; box-shadow: 0 0 24px #2277ee66; transform: translateY(-2px); }
-
-.fondo-panel { text-align: center; padding: 32px 20px; }
-.fondo-panel-contenido h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; color: #ffffff; }
-.fondo-panel-contenido p { color: #aaaaaa; margin-bottom: 20px; }
-
-/* =============================================
-   VISTA DETALLE
-   ============================================= */
-.contenedor-detalle { position: relative; z-index: 2; text-align: center; padding: 40px 20px; }
-#detalle-titulo { margin-bottom: 20px; font-size: 2rem; letter-spacing: 2px; }
-.img-grande { max-width: 80vw; max-height: 60vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 24px; }
-.btn-volver {
-  padding: 12px 28px; background: transparent;
-  border: 2px solid var(--c-morado); color: var(--c-morado);
-  border-radius: 50px; font-size: 1rem; cursor: pointer; font-weight: 600; margin-top: 16px;
-  transition: background 0.2s, color 0.2s;
-}
-.btn-volver:hover { background: var(--c-morado); color: #fff; }
-
-/* =============================================
-   CARRUSEL CÓMO JUGAR
-   ============================================= */
-.seccion-como-jugar {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  padding: 100px 40px;
-  background: #111111;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.columna-info {
-  background: rgba(15,15,20,0.82);
-  border-radius: 16px;
-  overflow: hidden;
-  text-align: center;
+  padding: 14px 44px;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  text-decoration: none;
   position: relative;
-
-  backdrop-filter: blur(8px);
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
+  transition: color 0.3s;
 }
 
-.columna-info::before {
-  content: "";
+.btn-experiencia::before {
+  content: '';
   position: absolute;
   inset: 0;
-  border-radius: 16px;
-  padding: 2px;
+  background: linear-gradient(90deg, #b87adf, #2277ee, #3dcc1e, #e03535, #b87adf);
+  background-size: 300% 100%;
+  animation: borde-mix 3s linear infinite;
+  clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
+}
 
-  background: linear-gradient(
-    135deg,
-    #c792f9,
-    #007fff,
-    #39d31c,
-    #e04333
-  );
+.btn-experiencia::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: #111;
+  clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
+  z-index: 0;
+  transition: background 0.3s;
+}
 
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+.btn-experiencia span {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+}
 
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-
+.btn-experiencia span::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -80%;
+  transform: translateY(-50%);
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(184,122,223,0.5), rgba(34,119,238,0.6), transparent);
+  opacity: 0;
+  transition: opacity 0s, left 0s;
   pointer-events: none;
 }
 
-.contenedor-carrusel-jugar { flex: 1; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-.contenedor-carrusel-jugar::-webkit-scrollbar { display: none; }
-.track-jugar { display: flex; gap: 20px; }
+.btn-experiencia:hover span::before {
+  opacity: 1;
+  left: 180%;
+  transition: left 0.55s ease, opacity 0.1s;
+}
 
-.tarjeta-jugar {
-  flex: 0 0 calc(50% - 10px); 
-  scroll-snap-align: start; 
+.btn-experiencia span::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #b87adf, #2277ee, #3dcc1e, #e03535);
+  transition: width 0.4s ease;
+}
+
+.btn-experiencia:hover span::after { width: 100%; }
+
+@keyframes borde-mix {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+ 
+/* TRES COLUMNAS */
+.seccion-tres-columnas {
+  max-width: 1200px; margin: 80px auto;
+  padding: 0 30px;
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 30px;
+}
+.columna-info {
+  background: rgba(15,15,20,0.82); border-radius: 16px;
+  overflow: hidden; text-align: center; position: relative;
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.columna-info::before {
+  content: ""; position: absolute; inset: 0;
+  border-radius: 16px; padding: 2px;
+  background: linear-gradient(135deg,#c792f9,#007fff,#39d31c,#e04333);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+}
+.columna-info:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+.columna-info img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.columna-info h3 { font-size: 1.3rem; color: white; margin: 20px 0 10px; }
+.columna-info p  { color: #cccccc; line-height: 1.6; padding: 0 20px 25px; }
+ 
+.btn-volver {
+  padding: 12px 28px;
+  background: transparent;
+  border: 2px solid var(--c-morado);
+  color: var(--c-morado);
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 16px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-volver:hover { background: var(--c-morado); color: #fff; }
+.contenedor-detalle { position: relative; z-index: 2; text-align: center; padding: 40px 20px; }
+
+.btn-volver:hover { background: var(--c-morado); color: #fff; }
+.contenedor-detalle { position: relative; z-index: 2; text-align: center; padding: 40px 20px; }
+ 
+.hex-generado {
+  position: fixed;
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 9999;
+  opacity: 0;
+  transform: scale(0.1);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+ 
+/* FLIP CARDS GRANDES */
+.seccion-flip-grandes {
+  padding: 60px 32px;
+  background: linear-gradient(135deg, #1a0a2e 0%, #2d1155 40%, #1a0a2e 100%);
+}
+ 
+.contenedor-flip-grandes {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 32px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 16px;
+}
+ 
+.flip-card-grande {
+  width: 380px;
+  height: 500px;
+  perspective: 1200px;
+  cursor: pointer;
+}
+ 
+.flip-card-grande-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+ 
+.flip-card-grande:hover .flip-card-grande-inner {
+  transform: rotateY(180deg);
+}
+ 
+.flip-card-grande-front,
+.flip-card-grande-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: #1a1a1a;
-  transition: transform 0.3s;
+  border: 2px solid rgba(255,255,255,0.35);
+  box-shadow: 0 0 20px rgba(180,80,255,0.3), 0 8px 32px rgba(0,0,0,0.6);
 }
-.tarjeta-jugar:hover { transform: scale(1.02); border-color: var(--c-azul); }
-.tarjeta-jugar img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
-
-/* =============================================
-   RESPONSIVE FINAL DISPOSITIVOS MÓVILES
-   ============================================= */
+ 
+.flip-card-grande-front { background: #111; }
+ 
+.flip-card-grande-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+ 
+.flip-card-grande-titulo {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 20px 24px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+ 
+.flip-card-grande-back {
+  background: linear-gradient(160deg, #0a0a0a 0%, #1a0a2e 50%, #2d1155 100%);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 32px;
+  text-align: center;
+}
+ 
+.flip-card-grande-back h3 {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+ 
+.flip-card-grande-back p {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  line-height: 1.7;
+}
+ 
+/* MINI JUEGO */
+.seccion-minijuego {
+  padding: 60px 20px;
+  background: #0a0a0a;
+  text-align: center;
+}
+ 
+.minijuego-titulo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 8px;
+}
+ 
+.minijuego-subtitulo {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+ 
+.minijuego-wrapper {
+  position: relative;
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(184,122,223,0.15);
+  min-width: 200px;
+  min-height: 200px;
+  background: #111;
+}
+ 
+#minijuegoCanvas {
+  display: block;
+  cursor: pointer;
+  background: #111;
+}
+ 
+#confettiCanvas {
+  position: absolute;
+  top: 0; left: 0;
+  pointer-events: none;
+}
+ 
+#minijuego-contador {
+  position: absolute;
+  top: 14px; right: 18px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.5);
+  background: rgba(0,0,0,0.5);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  z-index: 2;
+}
+ 
+#minijuego-victoria {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  transition: opacity 0.5s;
+  z-index: 3;
+}
+ 
+#minijuego-victoria.oculto {
+  opacity: 0;
+  pointer-events: none;
+}
+ 
+#minijuego-victoria span {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #b87adf, #2277ee, #3dcc1e, #e03535);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+ 
+#minijuego-victoria button {
+  padding: 10px 28px;
+  background: linear-gradient(135deg, #b87adf, #2277ee);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+ 
+#minijuego-victoria button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(184,122,223,0.5);
+}
+ 
+/* COLMENA */
+.seccion-colmena {
+  padding: 60px 0 80px;
+  background: #080808;
+  overflow: hidden;
+  text-align: center;
+}
+ 
+.colmena-titulo {
+  color: #fff;
+  font-size: 28px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+ 
+#colmenaCanvas {
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+ 
+/* BOTÓN LANDING */
+#btn-landing {
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.45);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+ 
+/* RESPONSIVE */
 @media (max-width: 850px) {
-  .recuadro-concepto-global {
-    flex-direction: column;
-    padding: 30px;
-    gap: 30px;
-  }
+  .recuadro-concepto-global { flex-direction: column; padding: 30px; gap: 30px; }
   .recuadro-col-texto { text-align: center; }
-  .hero-contenido-layout { margin: 50px auto 30px auto; }
+  .hero-contenido-layout { margin: 50px auto 30px; }
+  .seccion-tres-columnas { grid-template-columns: 1fr; }
 }
-
 @media (max-width: 768px) {
-  .info-destacada { padding: 40px 20px; text-align: center; }
-  .info-imagen { display: none; }
-  .galeria-seis { grid-template-columns: repeat(2, 1fr); }
   .fila-rectangulos { grid-template-columns: 1fr; }
   .carrusel-item { flex: 0 0 220px; }
   .seccion-rectangulos { padding: 40px 20px; }
-  
-  .seccion-como-jugar {
-    flex-direction: column;
-    text-align: center;
-    padding: 40px 20px;
-  }
-  .columna-info-proyecto { flex: 1; text-align: center; }
-  .tarjeta-jugar { flex: 0 0 100%; }
-  
-  #galeria, .galeria {
-    grid-template-columns: 1fr;
-    padding: 0 16px;
-  }
-  #galeria.mostrar, .galeria.mostrar {
-    padding: 24px 16px;
-  }
-}.hexagono {
-  width: 80px;
-  height: 80px;
-  position: absolute;
-  z-index: 5;
-  clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
-  );
-}.logo {
-  filter: drop-shadow(0 0 10px #b87adf)
-          drop-shadow(0 0 20px #2277ee);
-}/* =============================================
-   SECCIÓN 3 COLUMNAS
-   ============================================= */
-
-.seccion-tres-columnas {
-  max-width: 1200px;
-  margin: 80px auto;
-  padding: 0 30px;
-
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-}
-
-.columna-info {
-  background: rgba(15,15,20,0.82);
-  border-radius: 16px;
+  .seccion-como-jugar { flex-direction: column; text-align: center; padding: 40px 20px; }
+  .flip-card { width: 160px; height: 240px; }
+  #galeria { padding: 0 16px; }
+  #galeria.abierta { padding: 24px 16px; }
+}/* ── SECCIÓN COLMENA ── */
+.seccion-colmena {
+  padding: 80px 0;
+  background: #080808;
   overflow: hidden;
-  text-align: center;
-  position: relative;
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.columna-info:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-}
-
-.columna-info img {
+.colmena-grid {
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
-  height: 220px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  justify-content: center;
+  gap: 0;
+}
+
+.hex-celda {
+  position: relative;
+  width: 180px;
+  height: 103.92px;
+  margin: 1px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: #111;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.hex-celda:nth-child(odd) {
+  margin-top: 53px;
+}
+
+.hex-celda-contenido {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  padding: 12px;
+  text-align: center;
+}
+
+.hex-celda:hover .hex-celda-contenido {
+  opacity: 1;
+}
+
+/* Borde sutil cuando vacío */
+.hex-celda::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(255,255,255,0.04);
+  transition: background 0.3s;
+  z-index: 0;
+}
+
+.hex-celda:hover::before {
+  background: transparent;
+}
+
+/* Tipo IMAGEN */
+.hex-celda.tipo-imagen .hex-celda-contenido {
+  padding: 0;
+}
+
+.hex-celda.tipo-imagen img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.columna-info h3 {
-  font-size: 1.3rem;
-  color: white;
-  margin: 20px 0 10px;
-}
-
-.columna-info p {
-  color: #cccccc;
-  line-height: 1.6;
-  padding: 0 20px 25px;
-}/* =============================================
-   BOTÓN HEXÁGONO EXPERIENCIA
-   ============================================= */
-
-.hex-boton-experiencia {
-  width: 140px;
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  position: relative;
-  margin: 40px auto;
-
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.08em;
-
-  clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
-  );
-
-  background: rgba(15,15,20,0.9);
-
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.hex-celda.tipo-imagen:hover {
+  transform: scale(1.08);
   z-index: 5;
 }
 
-/* Borde brillante degradado */
-.hex-boton-experiencia::before {
-  content: "";
+/* Tipo TEXTO */
+.hex-celda.tipo-texto {
+  background: #0e0e0e;
+}
+
+.hex-celda.tipo-texto:hover {
+  transform: scale(1.08);
+  z-index: 5;
+}
+
+.hex-celda.tipo-texto .hex-celda-contenido {
+  padding: 20px 18px;
+  gap: 6px;
+}
+
+.hex-titulo-colmena {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.hex-texto-colmena {
+  font-size: 10px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.75);
+}
+
+/* Degradés de los 4 colores */
+.grad-morado { background: linear-gradient(135deg, #b87adf, #7a3fa0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.grad-azul   { background: linear-gradient(135deg, #2277ee, #0044aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.grad-verde  { background: linear-gradient(135deg, #3dcc1e, #1a7a08); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.grad-coral  { background: linear-gradient(135deg, #e03535, #a01515); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* Overlay oscuro en hover para tipo imagen */
+.hex-celda.tipo-imagen .hex-overlay {
   position: absolute;
   inset: 0;
-  padding: 3px;
-
-  background: linear-gradient(
-    135deg,
-    #c792f9,
-    #007fff,
-    #39d31c,
-    #e04333
-  );
-
-  clip-path: inherit;
-
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-
-  pointer-events: none;
+  background: rgba(0,0,0,0.45);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1;
 }
-
-/* Texto encima del borde */
-.hex-boton-experiencia span {
-  position: relative;
-  z-index: 2;
-}
-
-/* Hover glow */
-.hex-boton-experiencia:hover {
-  transform: scale(1.08) rotate(2deg);
-  box-shadow:
-    0 0 15px rgba(199,146,249,0.5),
-    0 0 25px rgba(0,127,255,0.3),
-    0 0 35px rgba(57,211,28,0.2);
-}/* Selecciona el enlace que envuelve al logo */
-.hero a:has(.logo) {
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-/* Efecto al pasar el cursor (Mouse Over) */
-.hero a:has(.logo):hover {
-  /* Hace que el logo crezca un poquito */
-  transform: scale(1.05); 
-  
-  /* Le cambia el color del brillo blanco por un tono morado/neon vibrante */
-  filter: drop-shadow(0 0 15px #b87adf); 
-}
-
-/* También podemos hacer que el trazado interno cambie cuando pasas el mouse por el enlace */
-.hero a:has(.logo):hover .logo path {
-  stroke: #3dcc1e; /* Cambia el color de la línea a verde (puedes cambiarlo por el color que quieras) */
-  fill: rgba(184, 122, 223, 0.15); /* Le da un leve fondo de color morado transparente */
-  transition: stroke 0.3s ease, fill 0.3s ease;
-}/* El recuadro contenedor para la sección Cómo Jugar */
-.seccion-como-jugar {
-  background: rgba(30, 30, 40, 0.6); /* Fondo oscuro semitransparente */
-  border: 2px solid #3dcc1e;         /* Borde verde neon (puedes cambiar el color) */
-  border-radius: 12px;               /* Bordes redondeados profesionales */
-  padding: 30px;                     /* Espacio interno para que respire el texto */
-  margin: 40px auto;                 /* Separa el recuadro de lo que está arriba y abajo */
-  max-width: 1200px;                 /* Evita que se estire demasiado en pantallas gigantes */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 
-              0 0 15px rgba(61, 204, 30, 0.2); /* Sombra externa y un leve brillo verde */
-  
-  /* Mantiene la distribución en filas o columnas */
+.hex-celda.tipo-imagen:hover .hex-overlay { opacity: 1; }
+.hex-celda.tipo-imagen .hex-celda-contenido { z-index: 2; }
+.hex-generado-fixed {
+  position: fixed !important;
+}.separador-hex {
   display: flex;
-  align-items: center;
-  gap: 30px;
+  justify-content: center;
+  padding: 8px 0;
+  overflow: hidden;
+  width: 100%;
 }
 
-/* La columna de texto dentro del recuadro */
-.columna-info-proyecto {
-  flex: 1;
+.sep-canvas {
+  display: block;
+  width: 100%;
+  height: 60px;
+} .footer-principal {
+  background: #0a0a0a;
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(90deg,#b87adf,#2277ee,#3dcc1e,#e03535) 1;
+}
+.footer-contenido { padding: 40px 60px 30px; max-width: 1200px; margin: 0 auto; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-logo { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.footer-logo span { color: #fff; font-size: 18px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; }
+.footer-desc { color: #555; font-size: 15px; line-height: 1.7; margin: 0; }
+.footer-col { display: flex; flex-direction: column; gap: 15px; }
+.footer-col-titulo { color: #fff; font-size: 18px; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 6px; font-weight: 700; }
+.footer-link { color: #555; font-size: 15px; text-decoration: none; transition: color 0.2s; }
+.footer-link:hover { color: #b87adf; }
+.footer-texto { color: #555; font-size: 15px; }
+.footer-nombre { color: #fff; font-size: 16px; font-weight: 600; }
+.footer-bottom { border-top: 1px solid #1a1a1a; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { color: #333; font-size: 15px; letter-spacing: 1px; }
+.footer-hexs { display: flex; gap: 8px; }
+.footer-hex { width: 8px; height: 8px; clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); }
+@media (max-width: 768px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-contenido { padding: 30px 20px; }
+} .seccion-modos {
+  padding: 80px 40px;
+  background: #0e0e0e;
+  text-align: center;
+}
+.modos-titulo {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin: 0 0 40px;
+}
+.modos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.modo-card {
+  height: 320px;
+  perspective: 1000px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+.modo-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.modo-card:hover .modo-card-inner {
+  transform: rotateY(180deg);
+}
+.modo-card-front, .modo-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 12px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-/* Título dentro del recuadro */
-.columna-info-proyecto h2 {
-  color: white;
-  font-size: 2rem;
-  margin-top: 0;
-  margin-bottom: 15px;
-}
-
-/* Párrafo dentro del recuadro */
-.columna-info-proyecto p {
-  color: #e0e0e0;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 25px;
-}
-
-/* Asegurar que se adapte bien si se mira desde un celular */
-@media (max-width: 768px) {
-  .seccion-como-jugar {
-    flex-direction: column; /* En celulares, el texto arriba y el carrusel abajo */
-    padding: 20px;
-  }
-}.btn-experiencia {
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-  
-  /* ESTO CONTROLA EL TAMAÑO */
-  width: fit-content;       /* Hace que el botón solo ocupe el ancho de su texto */
-  padding: 12px 24px;       /* Margen interno para que no se vea gigante */
-  margin-top: 15px !important; /* Separa el botón del párrafo de arriba */
-  
-  /* ESTILOS VISUALES (Cámbialos a tu gusto) */
-  background-color: #3dcc1e; /* Color verde (puedes usar el morado #b87adf si prefieres) */
-  color: white;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 6px;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  gap: 12px;
+  padding: 28px 20px;
+  box-sizing: border-box;
+  background: #0e0e0e;
 }
-
-/* Efecto al pasar el cursor */
-.btn-experiencia:hover {
-  background-color: #2bb310; /* Un verde un poco más oscuro */
-  transform: scale(1.03);    /* Crece un poquito de forma sutil */
-}/* BOTÓN HEXAGONAL CENTRADO Y CON TU PALETA */
-.hex-boton-experiencia {
-  position: relative;
-  
-  /* CAMBIO CLAVE: Cambiamos a 'flex' y usamos 'margin: 40px auto' para obligarlo a centrarse */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  text-decoration: none;
-  
-  /* Tamaño del botón */
-  width: 140px;
-  height: 160px;
-  
-  /* El 'auto' a los lados fuerza el centrado horizontal en la pantalla */
-  margin: 40px auto; 
-  cursor: pointer;
-  
-  /* Color del texto inicial: Combinando con tu morado */
-  color: #b87adf; 
-  font-weight: 800;
-  font-size: 0.85rem;
+.modo-card-back {
+  transform: rotateY(180deg);
+  padding: 0;
+}
+.modo-morado .modo-card-front { border: 1px solid #b87adf33; }
+.modo-azul   .modo-card-front { border: 1px solid #2277ee33; }
+.modo-verde  .modo-card-front { border: 1px solid #3dcc1e33; }
+.modo-morado .modo-card-back  { border: 1px solid #b87adf55; }
+.modo-azul   .modo-card-back  { border: 1px solid #2277ee55; }
+.modo-verde  .modo-card-back  { border: 1px solid #3dcc1e55; }
+.modo-glow { position: absolute; inset: 0; pointer-events: none; }
+.modo-morado .modo-glow { background: radial-gradient(circle at 50% 0%,#b87adf18,transparent 70%); }
+.modo-azul   .modo-glow { background: radial-gradient(circle at 50% 0%,#2277ee18,transparent 70%); }
+.modo-verde  .modo-glow { background: radial-gradient(circle at 50% 0%,#3dcc1e18,transparent 70%); }
+.modo-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  
-  /* Configuración del recorte hexagonal */
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  
-  /* BORDE INICIAL: Degradado Morado a Azul (idéntico al inicio de tu logo) */
-  background: linear-gradient(135deg, #b87adf 0%, #2277ee 100%);
-  
-  /* Animación suave */
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* LA CAPA INTERNA (Efecto Outline y fondo integrado) */
-.hex-boton-experiencia::before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  right: 2px;
-  bottom: 2px;
-  
-  /* En vez de negro puro, usamos un color de fondo integrado muy oscuro pero que se adapta */
-  background: rgba(18, 18, 24, 0.95); 
-  
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  margin: 0;
+  position: relative;
   z-index: 1;
-  transition: background 0.3s ease;
 }
-
-/* TEXTO DEL BOTÓN */
-.hex-boton-experiencia span {
+.modo-card p {
+  color: #888;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
   position: relative;
-  display: block;
-  line-height: 1.4;
-  padding: 15px;
+  z-index: 1;
+}
+.modo-badge {
+  display: inline-block;
+  padding: 6px 18px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+.modo-video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  z-index: 0;
+}
+.modo-back-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  display: flex;
+  justify-content: center;
   z-index: 2;
-  transition: color 0.3s ease;
+  border-radius: 0 0 12px 12px;
 }
-
-/* --- EFECTOS AL PASAR EL CURSOR (:HOVER) --- */
-
-.hex-boton-experiencia:hover {
-  transform: scale(1.08);
-  
-  /* BORDE ACTIVO: Cambia a los otros dos colores de tu paleta (Verde a Coral) */
-  background: linear-gradient(135deg, #3dcc1e 0%, #e03535 100%);
-  
-  /* Brillo neón usando el mismo color morado de tu marca */
-  filter: drop-shadow(0 0 15px rgba(184, 122, 223, 0.6));
+.modo-play {
+  padding: 8px 24px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-decoration: none;
+  text-transform: uppercase;
+  background: rgba(0,0,0,0.6);
+  white-space: nowrap;
+  transition: background 0.2s;
 }
-
-.hex-boton-experiencia:hover::before {
-  /* Al pasar el mouse, el fondo interno adquiere un leve tinte azulado sutil */
-  background: rgba(20, 25, 40, 0.95);
+.modo-play:hover {
+  background: rgba(0,0,0,0.9);
 }
-
-.hex-boton-experiencia:hover span {
-  /* El texto se ilumina con el verde vibrante de tu paleta */
-  color: #3dcc1e;
-  text-shadow: 0 0 5px rgba(61, 204, 30, 0.4);
-}/* Contenedor principal del minijuego */
-.recuadro-interactivo-juego {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 20px;
-  background: rgba(30, 30, 40, 0.4);
-  border: 2px dashed #b87adf; /* Borde sutil morado */
-  border-radius: 15px;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
-  position: relative;
-}
-
-/* Área interna donde se van a ir acomodando los hexágonos */
-.contenedor-juego {
-  width: 100%;
-  min-height: 250px;
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  overflow: hidden; /* Evita que los hexágonos salgan del recuadro */
-}
-
-/* Hexágono central (Botón de disparo) */
-.hexagono-central {
-  position: relative;
-  width: 80px;
-  height: 90px;
-  background: #ffffff;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-}
-.hexagono-central:hover {
-  transform: scale(1.1);
-}
-.hexagono-central span {
-  color: #121214;
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-/* Los nuevos hexágonos que irán apareciendo */
-.hexagono-creado {
-  width: 60px;
-  height: 70px;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  opacity: 0;
-  transform: scale(0);
-  /* Animación de nacimiento: simula que crece desde una línea */
-  animation: nacerHexagono 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-@keyframes nacerHexagono {
-  0% { opacity: 0; transform: scale(0) rotate(-45deg); }
-  50% { opacity: 0.5; transform: scale(0.1, 1.2); } /* Simula una línea vertical primero */
-  100% { opacity: 1; transform: scale(1) rotate(0deg); }
-}
-
-/* --- EFECTO MATRIX (Hexágonos cayendo por toda la pantalla) --- */
-.hexagono-matrix {
-  position: fixed;
-  pointer-events: none; /* Para que no bloquee los clics en la página */
-  z-index: 9999;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  animation: caidaMatrix linear forwards;
-}
-
-@keyframes caidaMatrix {
-  0% {
-    top: -100px;
-    transform: rotate(0deg) scale(0.5);
-    opacity: 0.8;
-  }
-  100% {
-    top: 105vh;
-    transform: rotate(360deg) scale(1.2);
-    opacity: 0;
-  }
-}/* RECUADRO INTERACTIVO REFORZADO */
-.recuadro-interactivo-juego {
-  display: block !important; /* Fuerza a que se comporte como un bloque visible */
-  width: 100% !important;
-  max-width: 1200px;
-  min-height: 280px; /* Le damos una altura mínima obligatoria */
-  margin: 50px auto !important;
-  padding: 25px;
-  
-  /* FONTO Y BORDES MUY VISIBLES PARA QUE NO SE SQUIVE */
-  background: #1a1a24 !important; /* Un gris oscuro sólido */
-  border: 3px solid #b87adf !important; /* Borde morado grueso y continuo */
-  border-radius: 16px;
-  
-  /* Sombra para darle volumen */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(184, 122, 223, 0.2);
-  position: relative;
-  z-index: 5; /* Asegura que se posicione por encima de los fondos */
-}
-
-/* Contenedor interno */
-.contenedor-juego {
-  width: 100%;
-  min-height: 230px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
-  justify-content: center;
-  position: relative; /* Bloquea de forma absoluta el desbordamiento horizontal en todo el sitio */
-body, html {
-    overflow-x: hidden;
-    width: 100%;
-}
-
-/* Evita que los hexágonos HTML o el SVG del fondo estiren el contenedor .hero */
-.hero {
-    position: relative;
-    overflow: hidden; 
-}
+@media (max-width: 768px) {
+  .modos-grid { grid-template-columns: 1fr; }
+  .modo-card { height: 280px; }
+  .seccion-modos { padding: 40px 20px; }
 }
